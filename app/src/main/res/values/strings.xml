@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ContractorBOT</string>
     <string name="title_home">Get money</string>
-    <string name="title_dashboard">Reconquer MotherLand</string>
+    <string name="title_dashboard">Crusade</string>
+    <string name="content_dashboard">Reconquer MotherLand \nMake Communism great again!!</string>
     <string name="title_notifications">Get drunk</string>
 </resources>

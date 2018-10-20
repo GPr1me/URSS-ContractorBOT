@@ -906,15 +906,20 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         String query = "SELECT " + KEY_MATERIAL_ID +
                             ", " + KEY_MATERIAL_NAME +
                             ", " + KEY_TYPE_ID +
+                            ", " + KEY_TYPE_NAME +
                             ", " + KEY_SUPPLIER_ID +
+                            ", " + KEY_SUPPLIER_NAME +
                             ", " + KEY_PRICE +
-                       " FROM " + TABLE_MATERIAL /*+
+
+                       " FROM " + TABLE_MATERIAL +
+
                        " LEFT JOIN " + TABLE_TYPE +
                             " ON " + TABLE_MATERIAL + "." + KEY_TYPE_ID +
                                 " = " + TABLE_TYPE + "." + KEY_TYPE_ID +
+
                        " LEFT JOIN " + TABLE_SUPPLIER +
                             " ON " + TABLE_MATERIAL + "." + KEY_SUPPLIER_ID +
-                                " = " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_ID*/;
+                                " = " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_ID;
 
         Cursor cursor = null;
         SQLiteDatabase db = this.getWritableDatabase();

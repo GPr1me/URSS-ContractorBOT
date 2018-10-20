@@ -19,10 +19,18 @@ public class MaterialCursorAdapter extends CursorAdapter
         int materialId = cursor.getInt(0);
         String materialName = cursor.getString(1);
         int materialTypeId = cursor.getInt(2);
-        int materialSupplierId = cursor.getInt(3);
-        double materialPrice = cursor.getDouble(4);
+        String materialTypeName = cursor.getString(3);
+        int materialSupplierId = cursor.getInt(4);
+        String materialSupplierName = cursor.getString(5);
+        double materialPrice = cursor.getDouble(6);
 
-        //Material material = new Material(materialId, materialName, materialType, materialSupplier, materialPrice)
+        Material material = new Material(materialId,
+                                         materialName,
+                                         new MaterialType(materialTypeId,
+                                                          materialTypeName),
+                                         new MaterialSupplier(materialSupplierId,
+                                                              materialSupplierName),
+                                         materialPrice);
     }
 
 
