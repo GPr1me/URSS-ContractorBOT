@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
+/**
+ * Handle a cursor pointing to the Material table and generate the corresponding view
+ */
 public class MaterialCursorAdapter extends CursorAdapter
 {
     public MaterialCursorAdapter(Context context, Cursor materialCursor, int flags)
@@ -14,7 +17,20 @@ public class MaterialCursorAdapter extends CursorAdapter
         super(context, materialCursor, flags);
     }
 
+    @Override
     public void bindView(View view, Context context, Cursor cursor)
+    {
+        MaterialView materialView = (MaterialView) view;
+        materialView.setMaterial(getMaterial(cursor));
+    }
+
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        return new MaterialView(context, getMaterial(cursor));
+    }
+
+    private Material getMaterial(Cursor cursor)
     {
         int materialId = cursor.getInt(0);
         String materialName = cursor.getString(1);
@@ -24,25 +40,12 @@ public class MaterialCursorAdapter extends CursorAdapter
         String materialSupplierName = cursor.getString(5);
         double materialPrice = cursor.getDouble(6);
 
-        Material material = new Material(materialId,
-                                         materialName,
-                                         new MaterialType(materialTypeId,
-                                                          materialTypeName),
-                                         new MaterialSupplier(materialSupplierId,
-                                                              materialSupplierName),
-                                         materialPrice);
-    }
-
-
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        String livre_titre = cursor.getString(1);
-        String livre_auteur = cursor.getString(2);
-        String livre_categorie = cursor.getString(3);
-        int livre_id = cursor.getInt(0);
-        /*Livre livre = new Livre(livre_id, livre_titre, livre_auteur, livre_categorie);
-        LivreView livre_view = new LivreView(context, livre);
-        return livre_view;*/
-        return new View(context);
+        return new Material(materialId,
+                            materialName,
+                            new MaterialType(materialTypeId,
+                                             materialTypeName),
+                            new MaterialSupplier(materialSupplierId,
+                                                 materialSupplierName),
+                            materialPrice);
     }
 }

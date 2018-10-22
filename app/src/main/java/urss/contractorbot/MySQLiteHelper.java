@@ -860,7 +860,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public void initDB()
+    {
+        deleteAllEntries();
+        fillSuppliers(SUPPLIERS);
+        fillTypes(TYPES);
+        fillMaterials(MATERIALS);
+    }
 
+    @Override
     public void onCreate(SQLiteDatabase db)
     {
         String CREATE_TYPE_TABLE = "CREATE TABLE " + TABLE_TYPE + " ( " +
@@ -910,13 +918,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
                             ", " + KEY_SUPPLIER_ID +
                             ", " + KEY_SUPPLIER_NAME +
                             ", " + KEY_PRICE +
-
                        " FROM " + TABLE_MATERIAL +
-
                        " LEFT JOIN " + TABLE_TYPE +
                             " ON " + TABLE_MATERIAL + "." + KEY_TYPE_ID +
                                 " = " + TABLE_TYPE + "." + KEY_TYPE_ID +
-
                        " LEFT JOIN " + TABLE_SUPPLIER +
                             " ON " + TABLE_MATERIAL + "." + KEY_SUPPLIER_ID +
                                 " = " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_ID;
@@ -930,6 +935,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 
         db.close();
         return cursor;
+    }
+
+    public boolean deleteAllEntries()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int doneDelete = 0;
+        doneDelete = db.delete(TABLE_MATERIAL, null, null)
+                    + db.delete(TABLE_TYPE, null, null)
+                    + db.delete(TABLE_SUPPLIER, null, null);
+        db.close();
+        return doneDelete > 0;
     }
 
     public Cursor filtre(String column, String search)
@@ -971,6 +987,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         {
             db.endTransaction();
         }
+
+        db.close();
     }
 
     private void fillSuppliers(MaterialSupplier[] suppliers)
@@ -992,6 +1010,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         {
             db.endTransaction();
         }
+
+        db.close();
     }
 
     private void fillMaterials(Material[] materials)
@@ -1016,5 +1036,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         {
             db.endTransaction();
         }
+
+        db.close();
     }
 }
