@@ -33,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_material_list);
+                    cursor = db.getAllMaterials();
+                    adapter = new MaterialCursorAdapter(MainActivity.this, cursor, 0);
+                    lvMaterial = (ListView)findViewById(R.id.listViewMaterial);
+                    lvMaterial.setAdapter(adapter);
+                    lvMaterial.setItemChecked(0, true);
                     return true;
             }
             return false;
@@ -42,19 +47,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_send_commands);
-        initLayout();
+        setContentView(R.layout.materiallayout);
+        //mTextMessage.setText(R.string.title_material_list);
+        //initLayout();
 
         db = new MySQLiteHelper(this);
+        //db.resetDB();
         db.initDB();
-        /*cursor = db.getAllMaterials();
-        adapter = new MaterialCursorAdapter(this, cursor, 0);
-        lvMaterial.setAdapter(adapter);
-        lvMaterial.setItemChecked(0, true);*/
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        cursor = db.getAllMaterials();
+        adapter = new MaterialCursorAdapter(MainActivity.this, cursor, 0);
+        lvMaterial = (ListView)findViewById(R.id.listViewMaterial);
+        lvMaterial.setAdapter(adapter);
+        lvMaterial.setItemChecked(0, true);
+        /*mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
     }
 
     public void initLayout()

@@ -12,14 +12,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "MaterialDB";
     private static final String TABLE_MATERIAL = "material";
     private static final String TABLE_TYPE = "materials_type";
-    private static final String TABLE_SUPPLIER = "materials_SUPPLIER";
+    private static final String TABLE_SUPPLIER = "materials_Supplier";
 
-    private static final String KEY_MATERIAL_ID = "_material_id";
+    private static final String KEY_MATERIAL_ID = "_id";
     private static final String KEY_MATERIAL_NAME = "material_name";
     private static final String KEY_TYPE_ID = "_type_id";
     private static final String KEY_TYPE_NAME = "type_name";
-    private static final String KEY_SUPPLIER_ID = "_SUPPLIER_id";
-    private static final String KEY_SUPPLIER_NAME = "SUPPLIER_name";
+    private static final String KEY_SUPPLIER_ID = "_Supplier_id";
+    private static final String KEY_SUPPLIER_NAME = "Supplier_name";
     private static final String KEY_PRICE = "price";
 
     private static final String[] COLUMNS_MATERIAL =
@@ -868,6 +868,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         fillMaterials(MATERIALS);
     }
 
+    public void resetDB()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        this.onUpgrade(db, DATABASE_VERSION, DATABASE_VERSION);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db)
     {
@@ -894,12 +900,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         db.execSQL((CREATE_SUPPLIER_TABLE));
         db.execSQL((CREATE_MATERIAL_TABLE));
 
-        fillTypes(TYPES);
-        fillSuppliers(SUPPLIERS);
-        fillMaterials(MATERIALS);
     }
 
-
+    @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATERIAL);
@@ -911,12 +914,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 
     public Cursor getAllMaterials()
     {
-        String query = "SELECT " + KEY_MATERIAL_ID +
-                            ", " + KEY_MATERIAL_NAME +
-                            ", " + KEY_TYPE_ID +
-                            ", " + KEY_TYPE_NAME +
-                            ", " + KEY_SUPPLIER_ID +
-                            ", " + KEY_SUPPLIER_NAME +
+        String query = "SELECT " + TABLE_MATERIAL + "." + KEY_MATERIAL_ID +
+                            ", " + TABLE_MATERIAL + "." + KEY_MATERIAL_NAME +
+                            ", " + TABLE_TYPE + "." + KEY_TYPE_ID +
+                            ", " + TABLE_TYPE + "." + KEY_TYPE_NAME +
+                            ", " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_ID +
+                            ", " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_NAME +
                             ", " + KEY_PRICE +
                        " FROM " + TABLE_MATERIAL +
                        " LEFT JOIN " + TABLE_TYPE +
