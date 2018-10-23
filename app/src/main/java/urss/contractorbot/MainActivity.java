@@ -1,19 +1,20 @@
 package urss.contractorbot;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.content.Intent;
 import android.database.Cursor;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
-    private MySQLiteHelper db;
+    private MaterialSQLiteHelper db;
     private Cursor cursor;
     private MaterialCursorAdapter adapter;
     private ListView lvMaterial;
@@ -32,12 +33,8 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_material_list);
-                    cursor = db.getAllMaterials();
-                    adapter = new MaterialCursorAdapter(MainActivity.this, cursor, 0);
-                    lvMaterial = (ListView)findViewById(R.id.listViewMaterial);
-                    lvMaterial.setAdapter(adapter);
-                    lvMaterial.setItemChecked(0, true);
+                    Intent activite = new Intent(MainActivity.this, ChooseMaterialActivity.class);
+                    MainActivity.this.startActivity(activite);
                     return true;
             }
             return false;
@@ -47,26 +44,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.materiallayout);
-        //mTextMessage.setText(R.string.title_material_list);
-        //initLayout();
-
-        db = new MySQLiteHelper(this);
-        //db.resetDB();
-        db.initDB();
-
-        cursor = db.getAllMaterials();
-        adapter = new MaterialCursorAdapter(MainActivity.this, cursor, 0);
-        lvMaterial = (ListView)findViewById(R.id.listViewMaterial);
-        lvMaterial.setAdapter(adapter);
-        lvMaterial.setItemChecked(0, true);
-        /*mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
+        initLayout();
     }
 
     public void initLayout()
     {
-        lvMaterial = (ListView)findViewById(R.id.listViewMaterial);
+        setContentView(R.layout.main_activity);
+        mTextMessage = (TextView)findViewById(R.id.message);
+        BottomNavigationView navigation = (BottomNavigationView)findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 }

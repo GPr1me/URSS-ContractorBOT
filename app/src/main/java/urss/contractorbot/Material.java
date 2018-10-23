@@ -1,5 +1,7 @@
 package urss.contractorbot;
 
+import android.text.TextUtils;
+
 public class Material {
     private int _id;
     private String name;
@@ -15,10 +17,10 @@ public class Material {
     {
         super();
         this._id = _id;
-        this.name = name;
+        this.name = TextUtils.isEmpty(name) ? "error" : name;
         this.type = type;
         this.supplier = supplier;
-        this.price = price;
+        this.price = price < 0 ? 0 : price;
     }
 
     public Material(String name,
@@ -27,10 +29,10 @@ public class Material {
                     double price)
     {
         super();
-        this.name = name;
+        this.name = TextUtils.isEmpty(name) ? "error" : name;
         this.type = type;
         this.supplier = supplier;
-        this.price = price;
+        this.price = price < 0 ? 0 : price;
     }
 
     public int get_id() { return _id; }

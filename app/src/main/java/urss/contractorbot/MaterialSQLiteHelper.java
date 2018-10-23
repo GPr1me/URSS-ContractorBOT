@@ -6,34 +6,36 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class MySQLiteHelper extends SQLiteOpenHelper{
+public class MaterialSQLiteHelper extends SQLiteOpenHelper{
 
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "MaterialDB";
-    private static final String TABLE_MATERIAL = "material";
-    private static final String TABLE_TYPE = "materials_type";
-    private static final String TABLE_SUPPLIER = "materials_Supplier";
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "MaterialDB";
+    public static final String TABLE_MATERIAL = "material";
+    public static final String TABLE_TYPE = "materials_type";
+    public static final String TABLE_SUPPLIER = "materials_Supplier";
 
-    private static final String KEY_MATERIAL_ID = "_id";
-    private static final String KEY_MATERIAL_NAME = "material_name";
-    private static final String KEY_TYPE_ID = "_type_id";
-    private static final String KEY_TYPE_NAME = "type_name";
-    private static final String KEY_SUPPLIER_ID = "_Supplier_id";
-    private static final String KEY_SUPPLIER_NAME = "Supplier_name";
-    private static final String KEY_PRICE = "price";
+    public static final String KEY_MATERIAL_ID = "_id";
+    public static final String KEY_MATERIAL_NAME = "material_name";
+    public static final String KEY_MATERIAL_TYPE_ID = "_type_id";
+    public static final String KEY_TYPE_ID = "_id";
+    public static final String KEY_TYPE_NAME = "type_name";
+    public static final String KEY_MATERIAL_SUPPLIER_ID = "_Supplier_id";
+    public static final String KEY_SUPPLIER_ID = "_id";
+    public static final String KEY_SUPPLIER_NAME = "Supplier_name";
+    public static final String KEY_PRICE = "price";
 
     private static final String[] COLUMNS_MATERIAL =
     {
         KEY_MATERIAL_ID,
         KEY_MATERIAL_NAME,
-        KEY_TYPE_ID,
-        KEY_SUPPLIER_ID,
+        KEY_MATERIAL_TYPE_ID,
+        KEY_MATERIAL_SUPPLIER_ID,
         KEY_PRICE
     };
 
     private static final String[] COLUMNS_TYPE =
     {
-        KEY_MATERIAL_ID,
+        KEY_TYPE_ID,
         KEY_TYPE_NAME
     };
 
@@ -855,7 +857,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
             new Material("hardwood", TYPES[7], SUPPLIERS[28], 2.5)
     };
 
-    public MySQLiteHelper(Context context)
+    public MaterialSQLiteHelper(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -888,8 +890,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         String CREATE_MATERIAL_TABLE = "CREATE TABLE " + TABLE_MATERIAL + " ( " +
                                        KEY_MATERIAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                        KEY_MATERIAL_NAME + " TEXT, " +
-                                       KEY_TYPE_ID + " INTEGER, " +
-                                       KEY_SUPPLIER_ID + " INTEGER, " +
+                                       KEY_MATERIAL_TYPE_ID + " INTEGER, " +
+                                       KEY_MATERIAL_SUPPLIER_ID + " INTEGER, " +
                                        KEY_PRICE + " REAL, " +
                                        "FOREIGN KEY (" + KEY_TYPE_ID + ") REFERENCES " +
                                                     TABLE_TYPE + " (" + KEY_TYPE_ID + "), " +
@@ -915,19 +917,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
     public Cursor getAllMaterials()
     {
         String query = "SELECT " + TABLE_MATERIAL + "." + KEY_MATERIAL_ID +
-                            ", " + TABLE_MATERIAL + "." + KEY_MATERIAL_NAME +
-                            ", " + TABLE_TYPE + "." + KEY_TYPE_ID +
-                            ", " + TABLE_TYPE + "." + KEY_TYPE_NAME +
-                            ", " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_ID +
-                            ", " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_NAME +
-                            ", " + KEY_PRICE +
-                       " FROM " + TABLE_MATERIAL +
-                       " LEFT JOIN " + TABLE_TYPE +
-                            " ON " + TABLE_MATERIAL + "." + KEY_TYPE_ID +
-                                " = " + TABLE_TYPE + "." + KEY_TYPE_ID +
-                       " LEFT JOIN " + TABLE_SUPPLIER +
-                            " ON " + TABLE_MATERIAL + "." + KEY_SUPPLIER_ID +
-                                " = " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_ID;
+                ", " + TABLE_MATERIAL + "." + KEY_MATERIAL_NAME +
+                ", " + TABLE_MATERIAL + "." + KEY_MATERIAL_TYPE_ID +
+                ", " + TABLE_TYPE + "." + KEY_TYPE_NAME +
+                ", " + TABLE_MATERIAL + "." + KEY_MATERIAL_SUPPLIER_ID +
+                ", " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_NAME +
+                ", " + KEY_PRICE +
+                " FROM " + TABLE_MATERIAL +
+                " LEFT JOIN " + TABLE_TYPE +
+                " ON " + TABLE_MATERIAL + "." + KEY_MATERIAL_TYPE_ID +
+                " = " + TABLE_TYPE + "." + KEY_TYPE_ID +
+                " LEFT JOIN " + TABLE_SUPPLIER +
+                " ON " + TABLE_MATERIAL + "." + KEY_MATERIAL_SUPPLIER_ID +
+                " = " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_ID;
 
         Cursor cursor = null;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -939,6 +941,23 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
         db.close();
         return cursor;
     }
+
+    /*public Cursor getAllTypes()
+    {
+        String query = "SELECT * " +
+                " FROM " + TABLE_TYPE;
+
+        Cursor cursor = null;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        cursor = db.rawQuery(query, null);
+        if(cursor != null)
+            cursor.moveToFirst();
+
+        db.close();
+
+        return cursor;
+    }*/
 
     public boolean deleteAllEntries()
     {
@@ -1028,8 +1047,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
             for(Material material : materials)
             {
                 values.put(KEY_MATERIAL_NAME, material.getName());
-                values.put(KEY_TYPE_ID, material.getType().get_id());
-                values.put(KEY_SUPPLIER_ID, material.getSupplier().get_id());
+                values.put(KEY_MATERIAL_TYPE_ID, material.getType().get_id());
+                values.put(KEY_MATERIAL_SUPPLIER_ID, material.getSupplier().get_id());
                 values.put(KEY_PRICE, material.getPrice());
                 db.insert(TABLE_MATERIAL, null, values);
             }
