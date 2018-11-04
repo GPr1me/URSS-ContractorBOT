@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private Cursor cursor;
     private MaterialCursorAdapter adapter;
     private ListView lvMaterial;
+    private Intent activite;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -30,10 +31,11 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    activite = new Intent(MainActivity.this, TestBluetooth.class);
+                    MainActivity.this.startActivity(activite);
                     return true;
                 case R.id.navigation_notifications:
-                    Intent activite = new Intent(MainActivity.this, ChooseMaterialActivity.class);
+                    activite = new Intent(MainActivity.this, ChooseMaterialActivity.class);
                     MainActivity.this.startActivity(activite);
                     return true;
             }
