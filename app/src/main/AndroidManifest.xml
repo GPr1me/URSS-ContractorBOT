@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -29,9 +31,14 @@
             android:name=".ChooseMaterialActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-        android:name=".TestBluetooth"
-        android:label="@string/title_activity_find_btdevice"
-        android:parentActivityName=".MainActivity" />
+            android:name=".DeviceScanActivity"
+            android:parentActivityName=".MainActivity"/>
+
+        <activity
+            android:name="DeviceControlActivity"
+            android:parentActivityName=".MainActivity"/>
+
+        <service android:name="BluetoothLeService" android:enabled="true"/>
     </application>
 
 </manifest>
