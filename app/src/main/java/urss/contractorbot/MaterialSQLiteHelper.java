@@ -826,14 +826,18 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
         new MaterialSupplier(776, "Wico Plast"),
         new MaterialSupplier(777, "World Class Technologies"),
         new MaterialSupplier(778, "YOUJU New Materials"),
-        new MaterialSupplier(779, "Zakłady Azotowe w Tarnowie-Moscicach S.A."),
+        new MaterialSupplier(779, "Zaklady Azotowe w Tarnowie-Moscicach S.A."),
         new MaterialSupplier(780, "Zell-Metall Engineering Plastics"),
         new MaterialSupplier(781, "Zeon Chemicals"),
         new MaterialSupplier(782, "Zhejiang Double Fish Plastics Co., Ltd"),
         new MaterialSupplier(783, "Zhejiang Juner New Materials Co, Ltd"),
         new MaterialSupplier(784, "Zoltek RT"),
         new MaterialSupplier(785, "Zylog"),
-        new MaterialSupplier(786, "Zyvex Performance Materials")
+        new MaterialSupplier(786, "Zyvex Performance Materials"),
+        new MaterialSupplier(787, "Rona"),
+        new MaterialSupplier(788, "Home-Depot"),
+        new MaterialSupplier(789, "Reno-Depot"),
+        new MaterialSupplier(790, "Canac")
         //endregion
     };
 
@@ -853,8 +857,20 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
 
     private static final Material[] MATERIALS =
     {
-            new Material("tapestry", TYPES[7], SUPPLIERS[18], 12.5),
-            new Material("hardwood", TYPES[7], SUPPLIERS[28], 2.5)
+        //region Materials
+        new Material("tapestry", TYPES[7], SUPPLIERS[17], 12.5),
+        new Material("glue", TYPES[2], SUPPLIERS[786], 0.50),
+        new Material("Paint", TYPES[2], SUPPLIERS[786], 6.25),
+        new Material("Primer", TYPES[2], SUPPLIERS[786], 0.10),
+        new Material("hardwood", TYPES[6], SUPPLIERS[27], 4.00),
+        new Material("ceramic", TYPES[1], SUPPLIERS[786], 5.99),
+        new Material("Mortar", TYPES[4], SUPPLIERS[786], 0.60),
+        new Material("Grout", TYPES[4], SUPPLIERS[786], 0.20),
+        new Material("Laminate Flooring 8mm", TYPES[7], SUPPLIERS[786], 1.50),
+        new Material("Laminate Flooring 10mm", TYPES[7], SUPPLIERS[786], 2.00),
+        new Material("Laminate Flooring 12mm", TYPES[7], SUPPLIERS[786], 2.50),
+        new Material("Undercoat", TYPES[4], SUPPLIERS[786], 0.50)
+        //endregion
     };
 
     public MaterialSQLiteHelper(Context context)

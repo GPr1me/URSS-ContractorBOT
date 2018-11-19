@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-                    activite = new Intent(MainActivity.this, TestBluetooth.class);
+                    activite = new Intent(MainActivity.this, DeviceScanActivity.class);
                     MainActivity.this.startActivity(activite);
                     return true;
                 case R.id.navigation_notifications:

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ContractorBOT</string>
-    <string name="title_home">Get money</string>
-    <string name="title_dashboard">Reconquer MotherLand</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Connect</string>
     <string name="title_material_list">Materials</string>
     <string name="ble_not_supported">Bluetooth 4.0 (BLE) n\'est pas supporté votre appareil. Rendez-vous sur le lien suivant pour télécharger une application permettant la connection bluetooth 4.0 : http://wiki.sunfounder.cc/images/6/6b/BleSerialPort.zip</string>
     <string name="BT_Not_Enabled">Bluetooth isn\'t enabled. Please Enable Bluetooth to connect on the ContractorBot.</string>
@@ -23,5 +23,6 @@
     <string name="menu_disconnect">Disconnect</string>
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
-    <string name="send_button_text">Send</string>
+    <string name="send_button_go">Send</string>
+    <string name="button_back">Back</string>
 </resources>

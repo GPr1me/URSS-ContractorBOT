@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/AppTheme.AppBarOverlay"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,18 +17,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <EditText android:id="@+id/edit_text_out"
+        <Button android:id="@+id/button_send_go"
+            android:onClick="btnClickGo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="bottom"
-            android:maxLength="20"
-        />
-        <Button android:id="@+id/button_send"
-            android:onClick="btnClick"
+            android:text="@string/send_button_go"
+            />
+        <Button android:id="@+id/button_back"
+            android:onClick="btnClickBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send_button_text"
-        />
+            android:text="@string/button_back"
+            />
     </LinearLayout>
 </LinearLayout>

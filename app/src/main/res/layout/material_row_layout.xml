@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/MaterialName"
-        android:layout_width="180dp"
+        android:layout_width="240dp"
         android:layout_height="25dp"
         android:textAlignment="textStart"
         android:textSize="18sp"

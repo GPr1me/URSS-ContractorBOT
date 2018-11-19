@@ -54,6 +54,9 @@ public class DeviceControlActivity extends Activity {
 	public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
 	public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
+	private Intent activite;
+	private String RobotMessage = "";
+
 	private TextView mConnectionState;
 	private TextView mDataField;
 	private String mDeviceName;
@@ -416,18 +419,19 @@ public class DeviceControlActivity extends Activity {
 	// 
 	// Click handler for Send button
 	//
-	public void btnClick(View view) {
+	public void btnClickGo(View view) {
 		sendSerial();
 	}
+
+	public void btnClickBack(View view){ ReturnHome(); }
 
 	// blechat
 	//
 	// sendSerial
 	//
 	// Send string io out field
-	private void sendSerial() {  
-		TextView view = (TextView) findViewById(R.id.edit_text_out);
-		String message = view.getText().toString();
+	private void sendSerial() {
+		String message = "Va y petit robot!";
 
 		Log.d(TAG, "Sending: " + message);
 		final byte[] tx = message.getBytes();
@@ -436,6 +440,11 @@ public class DeviceControlActivity extends Activity {
 			mBluetoothLeService.writeCharacteristic(characteristicTX);
 		} // if
 
+	}
+
+	private void ReturnHome(){
+		activite = new Intent(DeviceControlActivity.this, MainActivity.class);
+		DeviceControlActivity.this.startActivity(activite);
 	}
 	
 	// blechat 
