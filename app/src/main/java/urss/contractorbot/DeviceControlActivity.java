@@ -40,6 +40,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect,
@@ -76,6 +78,14 @@ public class DeviceControlActivity extends Activity {
 
 	private final String LIST_NAME = "NAME";
 	private final String LIST_UUID = "UUID";
+
+	private float SurfaceX, SurfaceY, SurfaceZ;
+
+	private boolean AllSurfaceFound(){
+		return SurfaceX > 0
+				&& SurfaceY > 0
+				&& SurfaceZ > 0;
+	}
 
 	// Code to manage Service lifecycle.
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -137,6 +147,12 @@ public class DeviceControlActivity extends Activity {
 			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
 				displayData(intent
 						.getStringExtra(BluetoothLeService.EXTRA_DATA));
+				if(extractData(intent
+						.getStringExtra(BluetoothLeService.EXTRA_DATA))){
+					if(AllSurfaceFound()){
+
+					}
+				}
 			}
 		}
 	};
@@ -403,6 +419,42 @@ public class DeviceControlActivity extends Activity {
 
 	}
 
+	private boolean extractData(String rawData){
+
+		Pattern GeneralPattern = Pattern.compile("[x, y, z][0-9]+.[0-9]{2};");
+		Pattern CoreNumber = Pattern.compile("[0-9]+.[0-9]{2}");
+		Matcher GeneralPatternMatcher = GeneralPattern.matcher(rawData);
+		Matcher CoreNumberMatcher;
+
+		boolean dataFound = GeneralPatternMatcher.find();
+		if(dataFound){
+
+			CoreNumberMatcher = CoreNumber.matcher(GeneralPatternMatcher.group(0));
+
+			// Switch on the 1st char of the pattern found
+			switch (GeneralPatternMatcher.group(0).charAt(0)){
+
+				// Each case extract the number inside the pattern and put it in the appropriate variable
+				case 'x':
+				    String test = CoreNumberMatcher.group(0); // <- Problem here <-
+					SurfaceX = Float.parseFloat(CoreNumberMatcher.group(0));
+					if(SurfaceX<=0) SurfaceX = 0;
+					break;
+				case 'y':
+					SurfaceY = Float.parseFloat(CoreNumberMatcher.group(0));
+					if(SurfaceY<=0) SurfaceY = 0;
+					break;
+				case 'z':
+					SurfaceZ = Float.parseFloat(CoreNumberMatcher.group(0));
+					if(SurfaceZ<=0) SurfaceZ = 0;
+					break;
+				default: // If regex is setup properly -> will never happen
+					dataFound = false;
+			}
+		}
+		return dataFound;
+	}
+
 	private static IntentFilter makeGattUpdateIntentFilter() {
 		final IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
@@ -431,7 +483,7 @@ public class DeviceControlActivity extends Activity {
 	//
 	// Send string io out field
 	private void sendSerial() {
-		String message = "Va y petit robot!";
+		String message = getResources().getString(R.string.send_button_message);
 
 		Log.d(TAG, "Sending: " + message);
 		final byte[] tx = message.getBytes();
@@ -443,6 +495,7 @@ public class DeviceControlActivity extends Activity {
 	}
 
 	private void ReturnHome(){
+		mBluetoothLeService.disconnect();
 		activite = new Intent(DeviceControlActivity.this, MainActivity.class);
 		DeviceControlActivity.this.startActivity(activite);
 	}

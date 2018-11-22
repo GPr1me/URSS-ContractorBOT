@@ -24,5 +24,6 @@
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
     <string name="send_button_go">Send</string>
+    <string name="send_button_message">Vas-y petit robot!</string>
     <string name="button_back">Back</string>
 </resources>
