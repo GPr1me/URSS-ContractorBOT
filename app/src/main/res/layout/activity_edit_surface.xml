@@ -20,15 +20,19 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_edit_surface" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_edit_surface" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="158dp"
+        android:background="@color/colorAccent"
+        android:text="@string/btn_GenerateBOM"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="bottom|center" />
 
 </android.support.design.widget.CoordinatorLayout>
