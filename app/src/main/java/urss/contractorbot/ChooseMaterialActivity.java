@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ChooseMaterialActivity extends Activity {
+public class ChooseMaterialActivity extends EditSurfaceActivity {
 
     private TextView tvChooseMaterialTitle;
     private MaterialSQLiteHelper db;

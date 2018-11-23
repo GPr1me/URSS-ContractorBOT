@@ -145,13 +145,11 @@ public class DeviceControlActivity extends Activity {
 				// displayGattServices(mBluetoothLeService
 				// .getSupportedGattServices());
 			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-				displayData(intent
-						.getStringExtra(BluetoothLeService.EXTRA_DATA));
-				if(extractData(intent
-						.getStringExtra(BluetoothLeService.EXTRA_DATA))){
-					if(AllSurfaceFound()){
+				displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+				extractData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
 
-					}
+				if(AllSurfaceFound()){
+					EditSurfaces();
 				}
 			}
 		}
@@ -430,13 +428,13 @@ public class DeviceControlActivity extends Activity {
 		if(dataFound){
 
 			CoreNumberMatcher = CoreNumber.matcher(GeneralPatternMatcher.group(0));
+			CoreNumberMatcher.find();
 
 			// Switch on the 1st char of the pattern found
 			switch (GeneralPatternMatcher.group(0).charAt(0)){
 
 				// Each case extract the number inside the pattern and put it in the appropriate variable
 				case 'x':
-				    String test = CoreNumberMatcher.group(0); // <- Problem here <-
 					SurfaceX = Float.parseFloat(CoreNumberMatcher.group(0));
 					if(SurfaceX<=0) SurfaceX = 0;
 					break;
@@ -497,6 +495,14 @@ public class DeviceControlActivity extends Activity {
 	private void ReturnHome(){
 		mBluetoothLeService.disconnect();
 		activite = new Intent(DeviceControlActivity.this, MainActivity.class);
+		DeviceControlActivity.this.startActivity(activite);
+	}
+
+	private void EditSurfaces(){
+		activite = new Intent(DeviceControlActivity.this, EditSurfaceActivity.class);
+		activite.putExtra("SurfaceX", SurfaceX);
+		activite.putExtra("SurfaceY", SurfaceY);
+		activite.putExtra("SurfaceZ", SurfaceZ);
 		DeviceControlActivity.this.startActivity(activite);
 	}
 	
