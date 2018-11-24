@@ -18,16 +18,25 @@ package urss.contractorbot;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v13.app.ActivityCompat;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +48,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+
+//import android.support.v13.app.ActivityCompat;
 
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
@@ -48,10 +60,42 @@ public class DeviceScanActivity extends ListActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
     private Handler mHandler;
-
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
+
+    //new location variables
+    private static final int REQUEST_LOCATION = 0;
+    private boolean permissions_granted=false;
+
+    //new scanner object
+    private BluetoothLeScanner scanner = null;
+
+
+    //function to be called to request for location permission
+    //magically request for location permission
+    private void requestLocationPermission() {
+        Log.i("URSS", "Location permission has NOT yet been granted. Requesting permission.");
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)){
+            Log.i("URSS", "Displaying location permission rationale to provide additional context.");
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Permission Required");
+            builder.setMessage("Please grant Location access so this application can perform Bluetooth scanning");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                public void onDismiss(DialogInterface dialog) {
+                    Log.d("URSS", "Requesting permissions after explanation");
+                    ActivityCompat.requestPermissions(DeviceScanActivity.this, new String[]{
+                            Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
+                }
+            });
+            builder.show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,13 +103,30 @@ public class DeviceScanActivity extends ListActivity {
         getActionBar().setTitle(R.string.title_devices);
         mHandler = new Handler();
 
-        int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
-        ActivityCompat.requestPermissions(this,
-                new String[]
-                        {
-                                Manifest.permission.ACCESS_COARSE_LOCATION
-                        },
-                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+        //new location permission request
+        //since feature added in android 6 (m), only needs permission from these devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissions_granted = false;
+                requestLocationPermission();
+            } else {
+                Log.i("URSS", "Location permission has already been granted. Starting scanning.");
+                permissions_granted = true;
+            }
+        } else {
+            // the ACCESS_COARSE_LOCATION permission did not exist before M so....
+            permissions_granted = true;
+        }
+
+        //old location permission request
+//        int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
+//        ActivityCompat.requestPermissions(this,
+//                new String[]
+//                        {
+//                                Manifest.permission.ACCESS_COARSE_LOCATION
+//                        },
+//                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
         // Use this check to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.
@@ -162,7 +223,9 @@ public class DeviceScanActivity extends ListActivity {
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         if (mScanning) {
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            //new version
+            scanner.stopScan(scan_callback);
             mScanning = false;
         }
         startActivity(intent);
@@ -170,21 +233,43 @@ public class DeviceScanActivity extends ListActivity {
 
     private void scanLeDevice(final boolean enable) {
         if (enable) {
+            //creates scanner if not already created
+            if (scanner == null) {
+                scanner = mBluetoothAdapter.getBluetoothLeScanner();
+                Log.d("URSS", "Created BluetoothScanner object");
+            }
+
             // Stops scanning after a pre-defined scan period.
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mScanning = false;
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    //new version
+                    scanner.stopScan(scan_callback);
                     invalidateOptionsMenu();
                 }
             }, SCAN_PERIOD);
 
             mScanning = true;
-            mBluetoothAdapter.startLeScan(mLeScanCallback);
+//            mBluetoothAdapter.startLeScan(mLeScanCallback);
+
+            //section for filters
+            List<ScanFilter> filters;
+            filters = new ArrayList<ScanFilter>();
+            //BDSK used in example, we only care about HMSoft devices so change made
+            ScanFilter filter = new ScanFilter.Builder().setDeviceName("HMSoft").build();
+            filters.add(filter);
+
+            ScanSettings settings = new ScanSettings.Builder().setScanMode(
+                    ScanSettings.SCAN_MODE_LOW_LATENCY).build();
+            scanner.startScan(filters, settings, scan_callback);
+
         } else {
             mScanning = false;
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            //new version
+            scanner.stopScan(scan_callback);
         }
         invalidateOptionsMenu();
     }
@@ -255,21 +340,37 @@ public class DeviceScanActivity extends ListActivity {
         }
     }
 
-    // Device scan callback.
-    private BluetoothAdapter.LeScanCallback mLeScanCallback =
-            new BluetoothAdapter.LeScanCallback() {
+//    // Device scan callback.
+//    private BluetoothAdapter.LeScanCallback mLeScanCallback =
+//            new BluetoothAdapter.LeScanCallback() {
+//
+//        @Override
+//        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mLeDeviceListAdapter.addDevice(device);
+//                    mLeDeviceListAdapter.notifyDataSetChanged();
+//                }
+//            });
+//        }
+//    };
 
-        @Override
-        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mLeDeviceListAdapter.addDevice(device);
-                    mLeDeviceListAdapter.notifyDataSetChanged();
-                }
-            });
-        }
+    // new device scan callback
+    private ScanCallback scan_callback = new ScanCallback(){
+
+            @Override
+            public void onScanResult(int callbackType, final ScanResult result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLeDeviceListAdapter.addDevice(result.getDevice());
+                        mLeDeviceListAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
     };
+
 
     static class ViewHolder {
         TextView deviceName;
