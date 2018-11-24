@@ -103,7 +103,7 @@ public class DeviceScanActivity extends ListActivity {
         getActionBar().setTitle(R.string.title_devices);
         mHandler = new Handler();
 
-        //added permission request
+        //new location permission request
         //since feature added in android 6 (m), only needs permission from these devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -119,6 +119,7 @@ public class DeviceScanActivity extends ListActivity {
             permissions_granted = true;
         }
 
+        //old location permission request
 //        int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
 //        ActivityCompat.requestPermissions(this,
 //                new String[]
