@@ -23,6 +23,11 @@ import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //import android.support.v13.app.ActivityCompat;
 
@@ -61,6 +67,10 @@ public class DeviceScanActivity extends ListActivity {
     //new location variables
     private static final int REQUEST_LOCATION = 0;
     private boolean permissions_granted=false;
+
+    //new scanner object
+    private BluetoothLeScanner scanner = null;
+
 
     //function to be called to request for location permission
     //magically request for location permission
@@ -212,7 +222,9 @@ public class DeviceScanActivity extends ListActivity {
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         if (mScanning) {
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            //new version
+            scanner.stopScan(scan_callback);
             mScanning = false;
         }
         startActivity(intent);
@@ -220,22 +232,43 @@ public class DeviceScanActivity extends ListActivity {
 
     private void scanLeDevice(final boolean enable) {
         if (enable) {
+            //creates scanner if not already created
+            if (scanner == null) {
+                scanner = mBluetoothAdapter.getBluetoothLeScanner();
+                Log.d("URSS", "Created BluetoothScanner object");
+            }
+
             // Stops scanning after a pre-defined scan period.
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mScanning = false;
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    //new version
+                    scanner.stopScan(scan_callback);
                     invalidateOptionsMenu();
                 }
             }, SCAN_PERIOD);
 
             mScanning = true;
-            mBluetoothAdapter.startLeScan(mLeScanCallback);
+//            mBluetoothAdapter.startLeScan(mLeScanCallback);
+
+            //section for filters
+            List<ScanFilter> filters;
+            filters = new ArrayList<ScanFilter>();
+            //BDSK used in example, we only care about HMSoft devices so change made
+            ScanFilter filter = new ScanFilter.Builder().setDeviceName("HMSoft").build();
+            filters.add(filter);
+
+            ScanSettings settings = new ScanSettings.Builder().setScanMode(
+                    ScanSettings.SCAN_MODE_LOW_LATENCY).build();
+            scanner.startScan(filters, settings, scan_callback);
 
         } else {
             mScanning = false;
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            //new version
+            scanner.stopScan(scan_callback);
         }
         invalidateOptionsMenu();
     }
@@ -306,22 +339,36 @@ public class DeviceScanActivity extends ListActivity {
         }
     }
 
-    // Device scan callback.
-    private BluetoothAdapter.LeScanCallback mLeScanCallback =
-            new BluetoothAdapter.LeScanCallback() {
+//    // Device scan callback.
+//    private BluetoothAdapter.LeScanCallback mLeScanCallback =
+//            new BluetoothAdapter.LeScanCallback() {
+//
+//        @Override
+//        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mLeDeviceListAdapter.addDevice(device);
+//                    mLeDeviceListAdapter.notifyDataSetChanged();
+//                }
+//            });
+//        }
+//    };
 
-        @Override
-        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mLeDeviceListAdapter.addDevice(device);
-                    mLeDeviceListAdapter.notifyDataSetChanged();
-                }
-            });
-        }
+    // new device scan callback
+    private ScanCallback scan_callback = new ScanCallback(){
+
+            @Override
+            public void onScanResult(int callbackType, final ScanResult result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLeDeviceListAdapter.addDevice(result.getDevice());
+                        mLeDeviceListAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
     };
-
 
 
     static class ViewHolder {
