@@ -29,8 +29,8 @@ public class ChooseMaterialActivity extends EditSurfaceActivity {
         lvMaterial = (ListView)findViewById(R.id.listViewMaterial);
         lvMaterial.setAdapter(adapter);
 
-        tvChooseMaterialTitle = (TextView)findViewById(R.id.tvChooseMaterial);
-        tvChooseMaterialTitle.setText(R.string.title_material_list);
+//        tvChooseMaterialTitle = (TextView)findViewById(R.id.tvChooseMaterial);
+//        tvChooseMaterialTitle.setText(R.string.title_material_list);
     }
 
     private void initDB()

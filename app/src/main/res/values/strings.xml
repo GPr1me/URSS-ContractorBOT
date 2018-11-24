@@ -26,4 +26,16 @@
     <string name="send_button_message">Vas-y petit robot!</string>
     <string name="button_back">Back</string>
     <string name="title_activity_edit_surface">EditSurfaceActivity</string>
+
+    <!-- content_edit_surface.xml -->
+    <string name="txt_Wall1">Mur 1</string>
+    <string name="txt_Wall2">Mur 2</string>
+    <string name="txt_Wall3">Mur 3</string>
+    <string name="txt_Wall4">Mur 4</string>
+    <string name="txt_Floor">Plancher</string>
+    <string name="txt_Ceiling">Plafond</string>
+    <string name="btn_Select">Choisir</string>
+
+    <!-- activity_edit_surface.xml -->
+    <string name="btn_GenerateBOM">Générer BOM</string>
 </resources>
