@@ -1,10 +1,9 @@
-package urss.contractorbot;
+package urss.contractorbot.Activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -14,7 +13,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import urss.contractorbot.SQLite.MaterialCursorAdapter;
+import urss.contractorbot.Model.MaterialListPosition;
+import urss.contractorbot.R;
+import urss.contractorbot.ViewModel.MaterialCursorAdapter;
 import urss.contractorbot.SQLite.MaterialSQLiteHelper;
 import urss.contractorbot.ViewModel.MaterialView;
 
@@ -34,7 +35,6 @@ public class ChooseMaterialActivity extends EditSurfaceActivity {
     private Resources res;
     private Intent activity;
     private Bundle extras;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,34 +65,56 @@ public class ChooseMaterialActivity extends EditSurfaceActivity {
     private void initLayout()
     {
         setContentView(R.layout.materiallayout);
+
+        tvChooseMaterialTitle = findViewById(R.id.tvChooseMaterial);
+
+        switch (listName){
+            case "materialsWall1":
+                tvChooseMaterialTitle.setText(res.getString(R.string.txt_Wall1));
+                break;
+            case "materialsWall2":
+                tvChooseMaterialTitle.setText(res.getString(R.string.txt_Wall2));
+                break;
+            case "materialsWall3":
+                tvChooseMaterialTitle.setText(res.getString(R.string.txt_Wall3));
+                break;
+            case "materialsWall4":
+                tvChooseMaterialTitle.setText(res.getString(R.string.txt_Wall4));
+                break;
+            case "materialsFloor":
+                tvChooseMaterialTitle.setText(res.getString(R.string.txt_Floor));
+                break;
+            case "materialsCeiling":
+                tvChooseMaterialTitle.setText(res.getString(R.string.txt_Ceiling));
+                break;
+            default:
+                tvChooseMaterialTitle.setText("ERROR");
+                break;
+        }
+
         lvMaterial = (ListView)findViewById(R.id.listViewMaterial);
+        lvMaterial.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         lvMaterial.setAdapter(adapter);
 
         lvMaterial.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id){
-                Material material = ((MaterialView)view).getMaterial();
+                MaterialListPosition material = new MaterialListPosition(((MaterialView)view).getMaterial(), lvMaterial.getPositionForView(view));
                 if(materials.contains(material)){
                     view.setSelected(false);
 //                    view.setBackgroundColor(ContextCompat.getColor(ChooseMaterialActivity.this, R.color.blanc));
-                    materials.remove(new MaterialListPosition(((MaterialView)view).getMaterial(), position));
+                    materials.remove(material);
                 } else{
                     view.setSelected(true);
 //                    view.setBackgroundColor(ContextCompat.getColor(ChooseMaterialActivity.this, R.color.colorAccent));
-                    materials.add(new MaterialListPosition(((MaterialView)view).getMaterial(), position));
+                    materials.add(material);
                 }
 
             }
         });
 
         for(MaterialListPosition material: materials){
-            View view = lvMaterial.getAdapter().getView(material.getPosition(), null, null);
-            view.setSelected(true);
-            view.isSelected();
-//            view.setBackgroundColor(ContextCompat.getColor(ChooseMaterialActivity.this, R.color.colorAccent));
-            view.invalidate();
+            lvMaterial.setItemChecked(material.getPosition(), true);
         }
-
-        lvMaterial.invalidate();
 
         btnCancel = (Button)findViewById(R.id.btn_Cancel);
         btnOk = (Button)findViewById(R.id.btn_OK);
@@ -115,9 +137,6 @@ public class ChooseMaterialActivity extends EditSurfaceActivity {
 
             }
         });
-
-//        tvChooseMaterialTitle = (TextView)findViewById(R.id.tvChooseMaterial);
-//        tvChooseMaterialTitle.setText(R.string.title_material_list);
 
         this.setFinishOnTouchOutside(false);
     }

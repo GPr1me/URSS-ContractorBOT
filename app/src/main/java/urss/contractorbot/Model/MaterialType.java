@@ -1,4 +1,4 @@
-package urss.contractorbot;
+package urss.contractorbot.Model;
 
 import android.text.TextUtils;
 

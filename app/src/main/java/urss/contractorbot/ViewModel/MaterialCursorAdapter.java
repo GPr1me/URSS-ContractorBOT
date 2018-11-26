@@ -1,4 +1,4 @@
-package urss.contractorbot.SQLite;
+package urss.contractorbot.ViewModel;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
-import java.util.ArrayList;
-
-import urss.contractorbot.Material;
-import urss.contractorbot.MaterialSupplier;
-import urss.contractorbot.MaterialType;
+import urss.contractorbot.Model.Material;
+import urss.contractorbot.Model.MaterialSupplier;
+import urss.contractorbot.Model.MaterialType;
 import urss.contractorbot.ViewModel.MaterialView;
 
 /**

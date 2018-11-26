@@ -25,7 +25,7 @@
     <string name="send_button_go">Send</string>
     <string name="send_button_message">Vas-y petit robot!</string>
     <string name="button_back">Back</string>
-    <string name="title_activity_edit_surface">EditSurfaceActivity</string>
+    <string name="title_activity_edit_surface">Choix des matériaux</string>
 
     <!-- content_edit_surface.xml -->
     <string name="txt_Wall1">Mur 1</string>
@@ -44,4 +44,5 @@
 
     <!-- ChooseMaterialActivity -->
     <string name="errorNoMaterialSelected">Vous devez sélectionner au moins un matériau pour votre surface.</string>
+    <string name="title_activity_generate_bom">GenerateBOMActivity</string>
 </resources>

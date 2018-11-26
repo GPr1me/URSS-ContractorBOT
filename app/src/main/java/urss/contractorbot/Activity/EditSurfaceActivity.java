@@ -1,14 +1,21 @@
-package urss.contractorbot;
+package urss.contractorbot.Activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import urss.contractorbot.Model.BOM;
+import urss.contractorbot.Model.BOMItem;
+import urss.contractorbot.Model.Material;
+import urss.contractorbot.Model.MaterialListPosition;
+import urss.contractorbot.R;
 
 public class EditSurfaceActivity extends AppCompatActivity {
 
@@ -61,7 +68,12 @@ public class EditSurfaceActivity extends AppCompatActivity {
         SurfaceY = extras.getFloat("SurfaceY");
         SurfaceZ = extras.getFloat("SurfaceZ");
 
+        generateLists();
 
+        initLayout();
+    }
+
+    private void generateLists(){
         materialsWall1 = (ArrayList<MaterialListPosition>) extras.getSerializable("materialsWall1");
         if(materialsWall1 == null) {
             materialsWall1 = new ArrayList<MaterialListPosition>();
@@ -91,9 +103,6 @@ public class EditSurfaceActivity extends AppCompatActivity {
         if(materialsCeiling == null) {
             materialsCeiling = new ArrayList<MaterialListPosition>();
         }
-
-
-        initLayout();
     }
 
     private void initLayout(){
@@ -114,6 +123,7 @@ public class EditSurfaceActivity extends AppCompatActivity {
         txtFloor.setText(Area + SurfaceZ);
         txtCeiling.setText(Area + SurfaceZ);
 
+        //region buttons init
         btnWall1 = (Button) findViewById(R.id.btn_Wall1);
         btnWall2 = (Button) findViewById(R.id.btn_Wall2);
         btnWall3 = (Button) findViewById(R.id.btn_Wall3);
@@ -128,6 +138,9 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 chooseMaterial("materialsWall1", materialsWall1);
             }
         });
+        if(!materialsWall1.isEmpty()){
+            btnWall1.setBackgroundColor(ContextCompat.getColor(EditSurfaceActivity.this, R.color.colorAccent));
+        }
 
         btnWall2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +148,9 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 chooseMaterial("materialsWall2", materialsWall2);
             }
         });
+        if(!materialsWall2.isEmpty()){
+            btnWall2.setBackgroundColor(ContextCompat.getColor(EditSurfaceActivity.this, R.color.colorAccent));
+        }
 
         btnWall3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +158,9 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 chooseMaterial("materialsWall3", materialsWall3);
             }
         });
+        if(!materialsWall3.isEmpty()){
+            btnWall3.setBackgroundColor(ContextCompat.getColor(EditSurfaceActivity.this, R.color.colorAccent));
+        }
 
         btnWall4.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +168,9 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 chooseMaterial("materialsWall4", materialsWall4);
             }
         });
+        if(!materialsWall4.isEmpty()){
+            btnWall4.setBackgroundColor(ContextCompat.getColor(EditSurfaceActivity.this, R.color.colorAccent));
+        }
 
         btnFloor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +178,9 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 chooseMaterial("materialsFloor", materialsFloor);
             }
         });
+        if(!materialsFloor.isEmpty()){
+            btnFloor.setBackgroundColor(ContextCompat.getColor(EditSurfaceActivity.this, R.color.colorAccent));
+        }
 
         btnCeiling.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,22 +188,46 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 chooseMaterial("materialsCeiling", materialsCeiling);
             }
         });
+        if(!materialsCeiling.isEmpty()){
+            btnCeiling.setBackgroundColor(ContextCompat.getColor(EditSurfaceActivity.this, R.color.colorAccent));
+        }
 
-
+        btnGenerateBOM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                generateBOM();
+            }
+        });
         if(!AllMaterialsAreSelected()){
             btnGenerateBOM.setEnabled(false);
             btnGenerateBOM.setVisibility(View.GONE);
         }
-
+        //endregion
     }
 
     private void chooseMaterial(String listName, ArrayList<MaterialListPosition> materials){
-
         activity = new Intent(EditSurfaceActivity.this, ChooseMaterialActivity.class);
         keepMemoryAlive();
         activity.putExtra(listName, materials);
         activity.putExtra("listName", listName);
         EditSurfaceActivity.this.startActivity(activity);
+    }
+
+    private void generateBOM(){
+        if(AllMaterialsAreSelected()){
+
+            BOM bom = new BOM();
+            bom.addList(materialsWall1, Math.round(SurfaceX));
+            bom.addList(materialsWall2, Math.round(SurfaceY));
+            bom.addList(materialsWall3, Math.round(SurfaceX));
+            bom.addList(materialsWall4, Math.round(SurfaceY));
+            bom.addList(materialsFloor, Math.round(SurfaceZ));
+            bom.addList(materialsCeiling, Math.round(SurfaceZ));
+
+            activity = new Intent(EditSurfaceActivity.this, GenerateBOMActivity.class);
+            activity.putExtra("bom", bom);
+            EditSurfaceActivity.this.startActivity(activity);
+        }
     }
 
     private boolean AllMaterialsAreSelected(){
@@ -200,6 +249,6 @@ public class EditSurfaceActivity extends AppCompatActivity {
         activity.putExtra("materialsWall3",(ArrayList<MaterialListPosition>) extras.getSerializable("materialsWall3"));
         activity.putExtra("materialsWall4",(ArrayList<MaterialListPosition>) extras.getSerializable("materialsWall4"));
         activity.putExtra("materialsFloor",(ArrayList<MaterialListPosition>) extras.getSerializable("materialsFloor"));
-        activity.putExtra("materialsCeiling",(ArrayList<MaterialListPosition>) extras.getSerializable("materialsCeiling"));
+        activity.putExtra("materialsCeiling",(ArrayList<Material>) extras.getSerializable("materialsCeiling"));
     }
 }

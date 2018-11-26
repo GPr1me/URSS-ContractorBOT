@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import urss.contractorbot.EditSurfaceActivity;
-import urss.contractorbot.MainActivity;
+import urss.contractorbot.Activity.EditSurfaceActivity;
+import urss.contractorbot.Activity.MainActivity;
 import urss.contractorbot.R;
 
 /**

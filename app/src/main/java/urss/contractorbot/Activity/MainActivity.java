@@ -1,4 +1,4 @@
-package urss.contractorbot;
+package urss.contractorbot.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,8 @@ import android.widget.TextView;
 import android.database.Cursor;
 
 import urss.contractorbot.BLE.DeviceScanActivity;
-import urss.contractorbot.SQLite.MaterialCursorAdapter;
+import urss.contractorbot.R;
+import urss.contractorbot.ViewModel.MaterialCursorAdapter;
 import urss.contractorbot.SQLite.MaterialSQLiteHelper;
 
 public class MainActivity extends AppCompatActivity {

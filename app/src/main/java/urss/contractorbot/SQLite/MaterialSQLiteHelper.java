@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import urss.contractorbot.Material;
-import urss.contractorbot.MaterialSupplier;
-import urss.contractorbot.MaterialType;
+import urss.contractorbot.Model.Material;
+import urss.contractorbot.Model.MaterialSupplier;
+import urss.contractorbot.Model.MaterialType;
 
 public class MaterialSQLiteHelper extends SQLiteOpenHelper{
 

@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import urss.contractorbot.R;
-import urss.contractorbot.Material;
+import urss.contractorbot.Model.Material;
 
 public class MaterialView extends LinearLayout {
 
