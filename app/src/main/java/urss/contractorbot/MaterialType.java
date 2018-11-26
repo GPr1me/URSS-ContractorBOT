@@ -2,7 +2,9 @@ package urss.contractorbot;
 
 import android.text.TextUtils;
 
-public class MaterialType {
+import java.io.Serializable;
+
+public class MaterialType implements Serializable {
     private int _id;
     private String name;
 
@@ -22,5 +24,17 @@ public class MaterialType {
     public int get_id() { return _id; }
 
     public String getName() { return name; }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof MaterialType)) {
+            return false;
+        }
+        MaterialType type = (MaterialType) o;
+        return this._id == type.get_id()
+                && this.name.equals(type.getName());
+    }
 }
 

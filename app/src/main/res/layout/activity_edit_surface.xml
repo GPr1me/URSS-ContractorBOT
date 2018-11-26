@@ -25,7 +25,7 @@
         layout="@layout/content_edit_surface" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_GenerateBOM"
         android:layout_width="match_parent"
         android:layout_height="158dp"
         android:background="@color/colorAccent"

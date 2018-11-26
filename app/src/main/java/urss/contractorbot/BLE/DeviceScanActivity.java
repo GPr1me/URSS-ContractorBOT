@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package urss.contractorbot;
+package urss.contractorbot.BLE;
 
 import android.Manifest;
 import android.app.Activity;
@@ -49,6 +49,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import urss.contractorbot.R;
 
 //import android.support.v13.app.ActivityCompat;
 
@@ -106,6 +108,7 @@ public class DeviceScanActivity extends ListActivity {
         //new location permission request
         //since feature added in android 6 (m), only needs permission from these devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 permissions_granted = false;
@@ -232,9 +235,10 @@ public class DeviceScanActivity extends ListActivity {
     }
 
     private void scanLeDevice(final boolean enable) {
-        if (enable) {
+        if (enable && mBluetoothAdapter.isEnabled()) {
             //creates scanner if not already created
             if (scanner == null) {
+
                 scanner = mBluetoothAdapter.getBluetoothLeScanner();
                 Log.d("URSS", "Created BluetoothScanner object");
             }
@@ -269,7 +273,10 @@ public class DeviceScanActivity extends ListActivity {
             mScanning = false;
 //            mBluetoothAdapter.stopLeScan(mLeScanCallback);
             //new version
-            scanner.stopScan(scan_callback);
+            if(scanner != null){
+                scanner.stopScan(scan_callback);
+            }
+
         }
         invalidateOptionsMenu();
     }

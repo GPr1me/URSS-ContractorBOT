@@ -1,12 +1,12 @@
-package urss.contractorbot;
+package urss.contractorbot.ViewModel;
 
 import android.content.Context;
-import android.text.Layout;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import urss.contractorbot.R;
+import urss.contractorbot.Material;
 
 public class MaterialView extends LinearLayout {
 

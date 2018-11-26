@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package urss.contractorbot;
+package urss.contractorbot.BLE;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -42,6 +42,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import urss.contractorbot.EditSurfaceActivity;
+import urss.contractorbot.MainActivity;
+import urss.contractorbot.R;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect,

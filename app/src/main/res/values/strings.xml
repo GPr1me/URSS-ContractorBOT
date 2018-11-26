@@ -38,4 +38,10 @@
 
     <!-- activity_edit_surface.xml -->
     <string name="btn_GenerateBOM">Générer BOM</string>
+
+    <!-- EditSurfaceActivity -->
+    <string name="area">Aire: </string>
+
+    <!-- ChooseMaterialActivity -->
+    <string name="errorNoMaterialSelected">Vous devez sélectionner au moins un matériau pour votre surface.</string>
 </resources>

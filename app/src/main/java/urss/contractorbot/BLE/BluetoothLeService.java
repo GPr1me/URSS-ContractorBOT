@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package urss.contractorbot;
+package urss.contractorbot.BLE;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;

@@ -2,7 +2,6 @@ package urss.contractorbot;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +9,10 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.database.Cursor;
+
+import urss.contractorbot.BLE.DeviceScanActivity;
+import urss.contractorbot.SQLite.MaterialCursorAdapter;
+import urss.contractorbot.SQLite.MaterialSQLiteHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.this.startActivity(activite);
                     return true;
                 case R.id.navigation_notifications:
-                    activite = new Intent(MainActivity.this, ChooseMaterialActivity.class);
+                    activite = new Intent(MainActivity.this, EditSurfaceActivity.class);
+                    activite.putExtra("SurfaceX", (float)423.24);
+                    activite.putExtra("SurfaceY", (float)5678.64);
+                    activite.putExtra("SurfaceZ", (float)65432.23);
                     MainActivity.this.startActivity(activite);
                     return true;
             }

@@ -10,17 +10,18 @@
 
     <TextView
         android:id="@+id/txt_CeilingArea"
-        android:layout_width="125dp"
+        android:layout_width="91dp"
         android:layout_height="41dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="25sp"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_Ceiling"
-        app:layout_constraintStart_toEndOf="@+id/txt_Ceiling"
-        app:layout_constraintTop_toBottomOf="@+id/txt_FloorArea" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_FloorArea"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/txt_Ceiling"
@@ -28,15 +29,18 @@
         android:layout_height="41dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/txt_Ceiling"
         android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/txt_CeilingArea"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_Floor" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_Floor"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_Ceiling"
@@ -44,29 +48,32 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="28dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/btn_Select"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Floor" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_Floor"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/txt_FloorArea"
-        android:layout_width="125dp"
+        android:layout_width="91dp"
         android:layout_height="41dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="28dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="25sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_Floor"
         app:layout_constraintTop_toBottomOf="@+id/txt_Wall4Area" />
 
     <TextView
         android:id="@+id/txt_Floor"
-        android:layout_width="94dp"
+        android:layout_width="103dp"
         android:layout_height="41dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/txt_Floor"
@@ -88,13 +95,13 @@
 
     <TextView
         android:id="@+id/txt_Wall4Area"
-        android:layout_width="125dp"
+        android:layout_width="91dp"
         android:layout_height="41dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="28dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="25sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_Wall4"
         app:layout_constraintTop_toBottomOf="@+id/txt_Wall3Area" />
 
@@ -104,7 +111,7 @@
         android:layout_height="41dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/txt_Wall4"
@@ -126,13 +133,13 @@
 
     <TextView
         android:id="@+id/txt_Wall2Area"
-        android:layout_width="125dp"
+        android:layout_width="91dp"
         android:layout_height="41dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="28dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="25sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_Wall2"
         app:layout_constraintTop_toBottomOf="@+id/txt_Wall1Area" />
 
@@ -142,7 +149,7 @@
         android:layout_height="41dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/txt_Wall2"
@@ -168,7 +175,7 @@
         android:layout_height="41dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/txt_Wall3"
@@ -180,13 +187,13 @@
 
     <TextView
         android:id="@+id/txt_Wall3Area"
-        android:layout_width="125dp"
+        android:layout_width="91dp"
         android:layout_height="41dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="28dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="25sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_Wall3"
         app:layout_constraintTop_toBottomOf="@+id/txt_Wall2Area" />
 
@@ -215,15 +222,16 @@
 
     <TextView
         android:id="@+id/txt_Wall1Area"
-        android:layout_width="125dp"
+        android:layout_width="91dp"
         android:layout_height="41dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="28dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="25sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_Wall1"
+        app:layout_constraintHorizontal_bias="0.942"
         app:layout_constraintStart_toEndOf="@+id/txt_Wall1"
         app:layout_constraintTop_toTopOf="parent" />
 

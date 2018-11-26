@@ -1,4 +1,4 @@
-package urss.contractorbot;
+package urss.contractorbot.SQLite;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,11 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
+import java.util.ArrayList;
+
+import urss.contractorbot.Material;
+import urss.contractorbot.MaterialSupplier;
+import urss.contractorbot.MaterialType;
+import urss.contractorbot.ViewModel.MaterialView;
+
 /**
  * Handle a cursor pointing to the Material table and generate the corresponding view
  */
 public class MaterialCursorAdapter extends CursorAdapter
 {
+
     public MaterialCursorAdapter(Context context, Cursor materialCursor, int flags)
     {
         super(context, materialCursor, flags);
@@ -20,8 +28,10 @@ public class MaterialCursorAdapter extends CursorAdapter
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {
+        Material material = getMaterial(cursor);
+
         MaterialView materialView = (MaterialView) view;
-        materialView.setMaterial(getMaterial(cursor));
+        materialView.setMaterial(material);
     }
 
 
