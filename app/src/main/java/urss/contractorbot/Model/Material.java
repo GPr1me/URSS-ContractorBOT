@@ -1,8 +1,11 @@
-package urss.contractorbot;
+package urss.contractorbot.Model;
 
 import android.text.TextUtils;
 
-public class Material {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Material implements Serializable {
     private int _id;
     private String name;
     private MaterialType type;
@@ -44,4 +47,19 @@ public class Material {
     public MaterialSupplier getSupplier() { return supplier; }
 
     public double getPrice() { return price; }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof Material)) {
+            return false;
+        }
+        Material material = (Material) o;
+        return this._id == material.get_id()
+                && this.name.equals(material.getName())
+                && this.price == material.getPrice()
+                && Objects.equals(this.type, material.getType())
+                && Objects.equals(this.supplier, material.getSupplier());
+    }
 }

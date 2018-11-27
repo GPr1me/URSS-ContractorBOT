@@ -1,8 +1,10 @@
-package urss.contractorbot;
+package urss.contractorbot.Model;
 
 import android.text.TextUtils;
 
-public class MaterialSupplier {
+import java.io.Serializable;
+
+public class MaterialSupplier implements Serializable {
     private int _id;
     private  String name;
 
@@ -22,4 +24,16 @@ public class MaterialSupplier {
     public int get_id() { return _id; }
 
     public String getName() { return name; }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof MaterialSupplier)) {
+            return false;
+        }
+        MaterialSupplier supplier = (MaterialSupplier) o;
+        return this._id == supplier.get_id()
+                && this.name.equals(supplier.getName());
+    }
 }

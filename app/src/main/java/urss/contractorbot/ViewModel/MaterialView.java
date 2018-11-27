@@ -1,12 +1,15 @@
-package urss.contractorbot;
+package urss.contractorbot.ViewModel;
 
 import android.content.Context;
-import android.text.Layout;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
+import urss.contractorbot.R;
+import urss.contractorbot.Model.Material;
 
 public class MaterialView extends LinearLayout {
 
@@ -15,6 +18,10 @@ public class MaterialView extends LinearLayout {
     private TextView tvSupplier;
     private TextView tvPrice;
     private Material material;
+
+    private DecimalFormat floatFormat;
+    private DecimalFormatSymbols separator;
+    private String unit = "$/pi\u00B2";
 
     public MaterialView(Context context, Material material)
     {
@@ -32,11 +39,16 @@ public class MaterialView extends LinearLayout {
 
     public void setMaterial(Material material)
     {
+        separator = new DecimalFormatSymbols(DecimalFormatSymbols.getAvailableLocales()[0]);
+        separator.setDecimalSeparator('.');
+        floatFormat = new DecimalFormat("#.##", separator);
+        floatFormat.setMinimumFractionDigits(2);
+
         this.material = material;
         tvName.setText(material.getName());
         tvType.setText(material.getType().getName());
         tvSupplier.setText(material.getSupplier().getName());
-        tvPrice.setText(material.getPrice() + "$");
+        tvPrice.setText(floatFormat.format(material.getPrice()) + unit);
     }
 
     public Material getMaterial() { return material; }

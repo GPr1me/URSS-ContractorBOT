@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="urss.contractorbot">
+    package="urss.contractorbot"
+    android:versionCode="1"
+    android:versionName="1.0">
+
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="false" />
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +31,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChooseMaterialActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".Activity.ChooseMaterialActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".Activity.MainActivity" />
         <activity
-        android:name=".TestBluetooth"
-        android:label="@string/title_activity_find_btdevice"
-        android:parentActivityName=".MainActivity" />
+            android:name=".BLE.DeviceScanActivity"
+            android:parentActivityName=".Activity.MainActivity"
+            android:theme="@style/AppTheme.AppBarOverlay" />
+        <activity
+            android:name=".BLE.DeviceControlActivity"
+            android:parentActivityName=".BLE.DeviceScanActivity"
+            android:theme="@style/AppTheme.AppBarOverlay" />
+
+        <service
+            android:name=".BLE.BluetoothLeService"
+            android:enabled="true" />
+
+        <activity
+            android:name=".Activity.EditSurfaceActivity"
+            android:label="@string/title_activity_edit_surface" />
+        <activity
+            android:name=".Activity.GenerateBOMActivity"
+            android:label="@string/title_activity_generate_bom"
+            android:theme="@style/AppTheme.AppBarOverlay" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package urss.contractorbot;
+package urss.contractorbot.ViewModel;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,11 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
+import urss.contractorbot.Model.Material;
+import urss.contractorbot.Model.MaterialSupplier;
+import urss.contractorbot.Model.MaterialType;
+import urss.contractorbot.ViewModel.MaterialView;
+
 /**
  * Handle a cursor pointing to the Material table and generate the corresponding view
  */
 public class MaterialCursorAdapter extends CursorAdapter
 {
+
     public MaterialCursorAdapter(Context context, Cursor materialCursor, int flags)
     {
         super(context, materialCursor, flags);
