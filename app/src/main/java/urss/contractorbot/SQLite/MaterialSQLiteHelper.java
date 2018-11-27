@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import urss.contractorbot.Model.BOM;
+import urss.contractorbot.Model.BOMItem;
 import urss.contractorbot.Model.Material;
 import urss.contractorbot.Model.MaterialSupplier;
 import urss.contractorbot.Model.MaterialType;
@@ -17,6 +19,7 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
     public static final String TABLE_MATERIAL = "material";
     public static final String TABLE_TYPE = "materials_type";
     public static final String TABLE_SUPPLIER = "materials_Supplier";
+    public static final String TABLE_BOM = "bom";
 
     public static final String KEY_MATERIAL_ID = "_id";
     public static final String KEY_MATERIAL_NAME = "material_name";
@@ -27,6 +30,9 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
     public static final String KEY_SUPPLIER_ID = "_id";
     public static final String KEY_SUPPLIER_NAME = "Supplier_name";
     public static final String KEY_PRICE = "price";
+    public static final String KEY_BOM_ID = "_id";
+    public static final String KEY_MATERIAL_BOM_ID = "material_id";
+    public static final String KEY_BOM_QUANTITY = "bom_quantity";
 
     private static final String[] COLUMNS_MATERIAL =
     {
@@ -47,6 +53,12 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
     {
         KEY_SUPPLIER_ID,
         KEY_SUPPLIER_NAME
+    };
+
+    private static final String[] COLUMNS_BOM =
+    {
+        KEY_MATERIAL_BOM_ID,
+        KEY_BOM_QUANTITY
     };
 
     private static final MaterialSupplier[] SUPPLIERS =
@@ -918,15 +930,23 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
                                        "FOREIGN KEY (" + KEY_SUPPLIER_ID + ") REFERENCES " +
                                                     TABLE_SUPPLIER + "(" + KEY_SUPPLIER_ID +"))";
 
+        String CREATE_BOM = "CREATE TABLE " + TABLE_BOM + " ( " +
+                            KEY_BOM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            KEY_MATERIAL_BOM_ID + " INTEGER, " +
+                            KEY_BOM_QUANTITY + " INTEGER, " +
+                            "FOREIGN KEY (" + KEY_MATERIAL_ID + ") REFERENCES " +
+                                          TABLE_MATERIAL + " (" + KEY_MATERIAL_ID + "))";
+
         db.execSQL((CREATE_TYPE_TABLE));
         db.execSQL((CREATE_SUPPLIER_TABLE));
         db.execSQL((CREATE_MATERIAL_TABLE));
-
+        db.execSQL((CREATE_BOM));
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
+        db.execSQL(("DROP TABLE IF EXISTS " + TABLE_BOM));
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATERIAL);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUPPLIER);
         db.execSQL(("DROP TABLE IF EXISTS " + TABLE_TYPE));
@@ -944,6 +964,38 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
                 ", " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_NAME +
                 ", " + KEY_PRICE +
                 " FROM " + TABLE_MATERIAL +
+                " LEFT JOIN " + TABLE_TYPE +
+                " ON " + TABLE_MATERIAL + "." + KEY_MATERIAL_TYPE_ID +
+                " = " + TABLE_TYPE + "." + KEY_TYPE_ID +
+                " LEFT JOIN " + TABLE_SUPPLIER +
+                " ON " + TABLE_MATERIAL + "." + KEY_MATERIAL_SUPPLIER_ID +
+                " = " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_ID;
+
+        Cursor cursor = null;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        cursor = db.rawQuery(query, null);
+        if(cursor != null)
+            cursor.moveToFirst();
+
+        db.close();
+        return cursor;
+    }
+
+    public Cursor getAllBOMItem(){
+        String query = "SELECT " + TABLE_BOM + "." + KEY_BOM_ID +
+                ", " + TABLE_BOM + "." + KEY_MATERIAL_BOM_ID +
+                ", " + TABLE_BOM + "." + KEY_BOM_QUANTITY +
+                ", " + TABLE_MATERIAL + "." + KEY_MATERIAL_NAME +
+                ", " + TABLE_MATERIAL + "." + KEY_MATERIAL_TYPE_ID +
+                ", " + TABLE_TYPE + "." + KEY_TYPE_NAME +
+                ", " + TABLE_MATERIAL + "." + KEY_MATERIAL_SUPPLIER_ID +
+                ", " + TABLE_SUPPLIER + "." + KEY_SUPPLIER_NAME +
+                ", " + KEY_PRICE +
+                " FROM " + TABLE_BOM +
+                " LEFT JOIN " + TABLE_MATERIAL +
+                " ON " + TABLE_BOM + "." + KEY_MATERIAL_BOM_ID +
+                " = " + TABLE_MATERIAL + "." + KEY_MATERIAL_ID +
                 " LEFT JOIN " + TABLE_TYPE +
                 " ON " + TABLE_MATERIAL + "." + KEY_MATERIAL_TYPE_ID +
                 " = " + TABLE_TYPE + "." + KEY_TYPE_ID +
@@ -983,7 +1035,8 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
     {
         SQLiteDatabase db = this.getWritableDatabase();
         int doneDelete = 0;
-        doneDelete = db.delete(TABLE_MATERIAL, null, null)
+        doneDelete = db.delete(TABLE_BOM, null, null)
+                    + db.delete(TABLE_MATERIAL, null, null)
                     + db.delete(TABLE_TYPE, null, null)
                     + db.delete(TABLE_SUPPLIER, null, null);
         db.close();
@@ -1071,6 +1124,29 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
                 values.put(KEY_MATERIAL_SUPPLIER_ID, material.getSupplier().get_id());
                 values.put(KEY_PRICE, material.getPrice());
                 db.insert(TABLE_MATERIAL, null, values);
+            }
+
+            db.setTransactionSuccessful();
+        } finally
+        {
+            db.endTransaction();
+        }
+
+        db.close();
+    }
+
+    public void fillBOM(BOM bom){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.beginTransaction();
+        try
+        {
+            ContentValues values = new ContentValues();
+            for(BOMItem item : bom.getList())
+            {
+                values.put(KEY_MATERIAL_BOM_ID, item.getMaterial().get_id());
+                values.put(KEY_BOM_QUANTITY, item.getQuantity());
+                db.insert(TABLE_BOM, null, values);
             }
 
             db.setTransactionSuccessful();

@@ -3,7 +3,7 @@ package urss.contractorbot.Model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class BOMItem implements Serializable {
+public class BOMItem {
 
     private Material material;
     private int quantity;
@@ -40,4 +40,19 @@ public class BOMItem implements Serializable {
             this.quantity = item.getQuantity();
         }
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//
+//        if (o == this) return true;
+//        if (!(o instanceof BOMItem)) {
+//            return false;
+//        }
+//        BOMItem material = (BOMItem) o;
+//        return this._id == material.get_id()
+//                && this.name.equals(material.getName())
+//                && this.price == material.getPrice()
+//                && Objects.equals(this.type, material.getType())
+//                && Objects.equals(this.supplier, material.getSupplier());
+//    }
 }

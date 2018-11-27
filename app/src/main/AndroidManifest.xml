@@ -32,15 +32,14 @@
         <activity
             android:name=".Activity.ChooseMaterialActivity"
             android:excludeFromRecents="true"
-            android:parentActivityName=".Activity.MainActivity"
-            android:theme="@style/AppTheme.AppBarOverlay" />
+            android:parentActivityName=".Activity.MainActivity" />
         <activity
             android:name=".BLE.DeviceScanActivity"
             android:parentActivityName=".Activity.MainActivity"
             android:theme="@style/AppTheme.AppBarOverlay" />
         <activity
             android:name=".BLE.DeviceControlActivity"
-            android:parentActivityName=".Activity.MainActivity"
+            android:parentActivityName=".BLE.DeviceScanActivity"
             android:theme="@style/AppTheme.AppBarOverlay" />
 
         <service
@@ -49,8 +48,7 @@
 
         <activity
             android:name=".Activity.EditSurfaceActivity"
-            android:label="@string/title_activity_edit_surface"
-            android:theme="@style/AppTheme" />
+            android:label="@string/title_activity_edit_surface" />
         <activity
             android:name=".Activity.GenerateBOMActivity"
             android:label="@string/title_activity_generate_bom"

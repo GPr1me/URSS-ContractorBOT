@@ -45,7 +45,10 @@ import java.util.regex.Pattern;
 
 import urss.contractorbot.Activity.EditSurfaceActivity;
 import urss.contractorbot.Activity.MainActivity;
+import urss.contractorbot.Helper.Utilities;
 import urss.contractorbot.R;
+
+import static urss.contractorbot.Helper.Utilities.cm2Topi2;
 
 /**
  * For a given BLE device, this Activity provides the user interface to connect,
@@ -504,24 +507,9 @@ public class DeviceControlActivity extends Activity {
 
 	private void EditSurfaces(){
 		activite = new Intent(DeviceControlActivity.this, EditSurfaceActivity.class);
-		activite.putExtra("SurfaceX", SurfaceX);
-		activite.putExtra("SurfaceY", SurfaceY);
-		activite.putExtra("SurfaceZ", SurfaceZ);
+		activite.putExtra("SurfaceX", cm2Topi2(SurfaceX));
+		activite.putExtra("SurfaceY", cm2Topi2(SurfaceY));
+		activite.putExtra("SurfaceZ", cm2Topi2(SurfaceZ));
 		DeviceControlActivity.this.startActivity(activite);
 	}
-	
-	// blechat 
-	/*
-    // on change of bars write char 
-    private void makeChange() {
-    	 String str = RGBFrame[0] + "," + RGBFrame[1] + "," + RGBFrame[2] + "\n";
-         Log.d(TAG, "Sending result=" + str);
-		 final byte[] tx = str.getBytes();
-		 if(mConnected) {
-		    characteristicTX.setValue(tx);
-			mBluetoothLeService.writeCharacteristic(characteristicTX);
-			mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
-		 }
-    }
-    */
 }

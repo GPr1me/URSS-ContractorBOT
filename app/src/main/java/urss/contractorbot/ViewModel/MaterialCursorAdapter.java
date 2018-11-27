@@ -26,10 +26,8 @@ public class MaterialCursorAdapter extends CursorAdapter
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {
-        Material material = getMaterial(cursor);
-
         MaterialView materialView = (MaterialView) view;
-        materialView.setMaterial(material);
+        materialView.setMaterial(getMaterial(cursor));
     }
 
 

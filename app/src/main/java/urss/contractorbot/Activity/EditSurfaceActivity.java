@@ -9,13 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import urss.contractorbot.Model.BOM;
 import urss.contractorbot.Model.BOMItem;
 import urss.contractorbot.Model.Material;
 import urss.contractorbot.Model.MaterialListPosition;
+import urss.contractorbot.Model.MaterialSupplier;
+import urss.contractorbot.Model.MaterialType;
 import urss.contractorbot.R;
+import urss.contractorbot.SQLite.MaterialSQLiteHelper;
 
 public class EditSurfaceActivity extends AppCompatActivity {
 
@@ -47,7 +51,7 @@ public class EditSurfaceActivity extends AppCompatActivity {
 
     private Bundle extras;
     private Resources res;
-    private String Area;
+    private MaterialSQLiteHelper db;
 
     private Intent activity;
 
@@ -63,7 +67,6 @@ public class EditSurfaceActivity extends AppCompatActivity {
         }
 
 
-        Area = res.getString(R.string.area);
         SurfaceX = extras.getFloat("SurfaceX");
         SurfaceY = extras.getFloat("SurfaceY");
         SurfaceZ = extras.getFloat("SurfaceZ");
@@ -116,12 +119,12 @@ public class EditSurfaceActivity extends AppCompatActivity {
         txtFloor = (TextView) findViewById(R.id.txt_FloorArea);
         txtCeiling = (TextView) findViewById(R.id.txt_CeilingArea);
 
-        txtWall1.setText(Area + SurfaceX);
-        txtWall2.setText(Area + SurfaceY);
-        txtWall3.setText(Area + SurfaceX);
-        txtWall4.setText(Area + SurfaceY);
-        txtFloor.setText(Area + SurfaceZ);
-        txtCeiling.setText(Area + SurfaceZ);
+        txtWall1.setText(String.format("%.2f", SurfaceX) + "pi2");
+        txtWall2.setText(String.format("%.2f", SurfaceY) + "pi2");
+        txtWall3.setText(String.format("%.2f", SurfaceX) + "pi2");
+        txtWall4.setText(String.format("%.2f", SurfaceY) + "pi2");
+        txtFloor.setText(String.format("%.2f", SurfaceZ) + "pi2");
+        txtCeiling.setText(String.format("%.2f", SurfaceZ) + "pi2");
 
         //region buttons init
         btnWall1 = (Button) findViewById(R.id.btn_Wall1);
@@ -198,10 +201,10 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 generateBOM();
             }
         });
-        if(!AllMaterialsAreSelected()){
-            btnGenerateBOM.setEnabled(false);
-            btnGenerateBOM.setVisibility(View.GONE);
-        }
+//        if(!AllMaterialsAreSelected()){
+//            btnGenerateBOM.setEnabled(false);
+//            btnGenerateBOM.setVisibility(View.GONE);
+//        }
         //endregion
     }
 
@@ -214,20 +217,27 @@ public class EditSurfaceActivity extends AppCompatActivity {
     }
 
     private void generateBOM(){
-        if(AllMaterialsAreSelected()){
 
-            BOM bom = new BOM();
-            bom.addList(materialsWall1, Math.round(SurfaceX));
-            bom.addList(materialsWall2, Math.round(SurfaceY));
-            bom.addList(materialsWall3, Math.round(SurfaceX));
-            bom.addList(materialsWall4, Math.round(SurfaceY));
-            bom.addList(materialsFloor, Math.round(SurfaceZ));
-            bom.addList(materialsCeiling, Math.round(SurfaceZ));
+        BOM bom = new BOM();
 
-            activity = new Intent(EditSurfaceActivity.this, GenerateBOMActivity.class);
-            activity.putExtra("bom", bom);
-            EditSurfaceActivity.this.startActivity(activity);
-        }
+        bom.addItem(new Material("tapestry", new MaterialType(7, "Pure Element"),new MaterialSupplier(17, "Aerospace Metal Composites, Ltd."), 12.5), 1);
+        bom.addItem(new Material("tapestry", new MaterialType(7, "Pure Element"),new MaterialSupplier(17, "Aerospace Metal Composites, Ltd."), 12.5), 7);
+        bom.addItem(new Material("tapestry", new MaterialType(7, "Pure Element"),new MaterialSupplier(17, "Aerospace Metal Composites, Ltd."), 12.5), 1);
+        bom.addItem(new Material("tapestry", new MaterialType(7, "Pure Element"),new MaterialSupplier(17, "Aerospace Metal Composites, Ltd."), 12.5), 7);
+//            bom.addList(materialsWall1, Math.round(SurfaceX));
+//            bom.addList(materialsWall2, Math.round(SurfaceY));
+//            bom.addList(materialsWall3, Math.round(SurfaceX));
+//            bom.addList(materialsWall4, Math.round(SurfaceY));
+//            bom.addList(materialsFloor, Math.round(SurfaceZ));
+//            bom.addList(materialsCeiling, Math.round(SurfaceZ));
+
+        activity = new Intent(EditSurfaceActivity.this, GenerateBOMActivity.class);
+//            activity.putExtra("bom", bom);
+        db = new MaterialSQLiteHelper(getApplicationContext());
+        db.resetDB();
+        db.initDB();
+        db.fillBOM(bom);
+        EditSurfaceActivity.this.startActivity(activity);
     }
 
     private boolean AllMaterialsAreSelected(){

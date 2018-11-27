@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BOM implements Serializable {
+public class BOM {
 
     private List<BOMItem> list;
 
@@ -40,7 +40,6 @@ public class BOM implements Serializable {
             } else {
                 break;
             }
-
         }
     }
 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:minHeight="70dp"
+    android:minHeight="110dp"
     android:padding="5dip">
 
     <TextView
@@ -16,30 +15,58 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/BOMMaterialSupplier"
         android:layout_width="180dp"
         android:layout_height="25dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/BOMQuantity"
+        app:layout_constraintEnd_toStartOf="@+id/BOMMaterialType"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BOMMaterialName" />
 
     <TextView
-        android:id="@+id/BOMMaterialPrice"
+        android:id="@+id/BOMUnitPrice"
         android:layout_width="100dp"
         android:layout_height="27dp"
         android:layout_marginEnd="4dp"
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/BOMMaterialType"
         android:layout_width="180dp"
         android:layout_height="25dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="10sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/BOMTotalPrice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BOMUnitPrice" />
+
+    <TextView
+        android:id="@+id/BOMQuantity"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:textSize="10sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/BOMTotalPrice" />
+
+    <TextView
+        android:id="@+id/BOMTotalPrice"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="2dp"
         android:textSize="10sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"

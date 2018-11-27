@@ -15,6 +15,8 @@ import urss.contractorbot.R;
 import urss.contractorbot.ViewModel.MaterialCursorAdapter;
 import urss.contractorbot.SQLite.MaterialSQLiteHelper;
 
+import static urss.contractorbot.Helper.Utilities.cm2Topi2;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
@@ -40,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_notifications:
                     activite = new Intent(MainActivity.this, EditSurfaceActivity.class);
-                    activite.putExtra("SurfaceX", (float)423.24);
-                    activite.putExtra("SurfaceY", (float)5678.64);
-                    activite.putExtra("SurfaceZ", (float)65432.23);
+                    activite.putExtra("SurfaceX", cm2Topi2((float)423.24));
+                    activite.putExtra("SurfaceY", cm2Topi2((float)5678.64));
+                    activite.putExtra("SurfaceZ", cm2Topi2((float)65432.23));
                     MainActivity.this.startActivity(activite);
                     return true;
             }
