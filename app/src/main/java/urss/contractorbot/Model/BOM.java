@@ -17,7 +17,7 @@ public class BOM {
 
     public void addItem(BOMItem item){
         if(list.contains(item)){
-            list.get(list.indexOf(item)).add(item);
+            list.get(list.indexOf(item)).add(item.getQuantity());
         } else {
             list.add(item);
         }
@@ -41,5 +41,15 @@ public class BOM {
                 break;
             }
         }
+    }
+
+    public float calculateGrandTotal(){
+        float result = 0;
+
+        for(BOMItem item: list){
+            result += (item.getQuantity() * item.getMaterial().getPrice());
+        }
+
+        return result;
     }
 }

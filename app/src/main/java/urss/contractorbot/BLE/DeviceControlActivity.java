@@ -426,7 +426,7 @@ public class DeviceControlActivity extends Activity {
 
 	private boolean extractData(String rawData){
 
-		Pattern GeneralPattern = Pattern.compile("[x, y, z][0-9]+.[0-9]{2};");
+		Pattern GeneralPattern = Pattern.compile("[x, y, z][0-9]+.[0-9]{2}");
 		Pattern CoreNumber = Pattern.compile("[0-9]+.[0-9]{2}");
 		Matcher GeneralPatternMatcher = GeneralPattern.matcher(rawData);
 		Matcher CoreNumberMatcher;
@@ -510,6 +510,9 @@ public class DeviceControlActivity extends Activity {
 		activite.putExtra("SurfaceX", cm2Topi2(SurfaceX));
 		activite.putExtra("SurfaceY", cm2Topi2(SurfaceY));
 		activite.putExtra("SurfaceZ", cm2Topi2(SurfaceZ));
+		SurfaceX = 0;	// Make sure it is reset if we go back
+		SurfaceY = 0;
+		SurfaceZ = 0;
 		DeviceControlActivity.this.startActivity(activite);
 	}
 }

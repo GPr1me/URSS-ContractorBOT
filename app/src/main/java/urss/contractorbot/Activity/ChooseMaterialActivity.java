@@ -93,7 +93,9 @@ public class ChooseMaterialActivity extends EditSurfaceActivity {
         }
 
         lvMaterial = (ListView)findViewById(R.id.listViewMaterial);
+        // Nécessaire pour modifier le background des vues avant qu'elles soient affichées
         lvMaterial.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
         lvMaterial.setAdapter(adapter);
 
         lvMaterial.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -101,11 +103,9 @@ public class ChooseMaterialActivity extends EditSurfaceActivity {
                 MaterialListPosition material = new MaterialListPosition(((MaterialView)view).getMaterial(), lvMaterial.getPositionForView(view));
                 if(materials.contains(material)){
                     view.setSelected(false);
-//                    view.setBackgroundColor(ContextCompat.getColor(ChooseMaterialActivity.this, R.color.blanc));
                     materials.remove(material);
                 } else{
                     view.setSelected(true);
-//                    view.setBackgroundColor(ContextCompat.getColor(ChooseMaterialActivity.this, R.color.colorAccent));
                     materials.add(material);
                 }
 

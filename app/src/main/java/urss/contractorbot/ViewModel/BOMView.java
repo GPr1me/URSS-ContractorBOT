@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 import urss.contractorbot.R;
 import urss.contractorbot.Model.BOMItem;
 
@@ -17,6 +20,10 @@ public class BOMView extends LinearLayout {
     private TextView tvQuantity;
     private TextView tvTotalPrice;
     private BOMItem bomItem;
+
+    private DecimalFormat floatFormat;
+    private DecimalFormatSymbols separator;
+    private String areaUnit = "pi\u00B2";
 
     public BOMView(Context context, BOMItem bomItem){
         super(context);
@@ -34,14 +41,19 @@ public class BOMView extends LinearLayout {
     }
 
     public void setBOMItem(BOMItem bomItem){
+        separator = new DecimalFormatSymbols(DecimalFormatSymbols.getAvailableLocales()[0]);
+        separator.setDecimalSeparator('.');
+        floatFormat = new DecimalFormat("#.##", separator);
+        floatFormat.setMinimumFractionDigits(2);
+
         this.bomItem = bomItem;
         tvName.setText(bomItem.getMaterial().getName());
         tvType.setText(bomItem.getMaterial().getType().getName());
         tvSupplier.setText(bomItem.getMaterial().getSupplier().getName());
-        tvUnitPrice.setText(bomItem.getMaterial().getPrice() + "$");
-        tvQuantity.setText(bomItem.getQuantity() + "");
+        tvUnitPrice.setText(floatFormat.format(bomItem.getMaterial().getPrice()) + "$/" + areaUnit);
+        tvQuantity.setText("Quantité: " + bomItem.getQuantity() + areaUnit);
         float totalPrice = (float)bomItem.getQuantity() * (float)bomItem.getMaterial().getPrice();
-        tvTotalPrice.setText(totalPrice + "$");
+        tvTotalPrice.setText("Prix total: " + floatFormat.format(totalPrice) + "$");
     }
 
     public BOMItem getBomItem(){ return bomItem; }

@@ -874,12 +874,12 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
     private static final Material[] MATERIALS =
     {
         //region Materials
-        new Material("tapestry", TYPES[7], SUPPLIERS[17], 12.5),
-        new Material("glue", TYPES[2], SUPPLIERS[786], 0.50),
+        new Material("Tapestry", TYPES[7], SUPPLIERS[17], 12.5),
+        new Material("Glue", TYPES[2], SUPPLIERS[786], 0.50),
         new Material("Paint", TYPES[2], SUPPLIERS[786], 6.25),
         new Material("Primer", TYPES[2], SUPPLIERS[786], 0.10),
-        new Material("hardwood", TYPES[6], SUPPLIERS[27], 4.00),
-        new Material("ceramic", TYPES[1], SUPPLIERS[786], 5.99),
+        new Material("Hardwood", TYPES[6], SUPPLIERS[27], 4.00),
+        new Material("Ceramic", TYPES[1], SUPPLIERS[786], 5.99),
         new Material("Mortar", TYPES[4], SUPPLIERS[786], 0.60),
         new Material("Grout", TYPES[4], SUPPLIERS[786], 0.20),
         new Material("Laminate Flooring 8mm", TYPES[7], SUPPLIERS[786], 1.50),

@@ -41,18 +41,14 @@ public class BOMItem {
         }
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//
-//        if (o == this) return true;
-//        if (!(o instanceof BOMItem)) {
-//            return false;
-//        }
-//        BOMItem material = (BOMItem) o;
-//        return this._id == material.get_id()
-//                && this.name.equals(material.getName())
-//                && this.price == material.getPrice()
-//                && Objects.equals(this.type, material.getType())
-//                && Objects.equals(this.supplier, material.getSupplier());
-//    }
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof BOMItem)) {
+            return false;
+        }
+        BOMItem item = (BOMItem) o;
+        return Objects.equals(this.material, item.getMaterial());
+    }
 }

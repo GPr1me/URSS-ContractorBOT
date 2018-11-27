@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import urss.contractorbot.Model.BOM;
 import urss.contractorbot.Model.BOMItem;
@@ -42,6 +44,10 @@ public class EditSurfaceActivity extends AppCompatActivity {
     private float SurfaceY;
     private float SurfaceZ;
 
+    private DecimalFormat floatFormat;
+    private DecimalFormatSymbols separator;
+    private String unit = "pi\u00B2";
+
     private ArrayList<MaterialListPosition> materialsWall1;
     private ArrayList<MaterialListPosition> materialsWall2;
     private ArrayList<MaterialListPosition> materialsWall3;
@@ -70,6 +76,11 @@ public class EditSurfaceActivity extends AppCompatActivity {
         SurfaceX = extras.getFloat("SurfaceX");
         SurfaceY = extras.getFloat("SurfaceY");
         SurfaceZ = extras.getFloat("SurfaceZ");
+
+        separator = new DecimalFormatSymbols(DecimalFormatSymbols.getAvailableLocales()[0]);
+        separator.setDecimalSeparator('.');
+        floatFormat = new DecimalFormat("#.##", separator);
+
 
         generateLists();
 
@@ -119,12 +130,12 @@ public class EditSurfaceActivity extends AppCompatActivity {
         txtFloor = (TextView) findViewById(R.id.txt_FloorArea);
         txtCeiling = (TextView) findViewById(R.id.txt_CeilingArea);
 
-        txtWall1.setText(String.format("%.2f", SurfaceX) + "pi2");
-        txtWall2.setText(String.format("%.2f", SurfaceY) + "pi2");
-        txtWall3.setText(String.format("%.2f", SurfaceX) + "pi2");
-        txtWall4.setText(String.format("%.2f", SurfaceY) + "pi2");
-        txtFloor.setText(String.format("%.2f", SurfaceZ) + "pi2");
-        txtCeiling.setText(String.format("%.2f", SurfaceZ) + "pi2");
+        txtWall1.setText(floatFormat.format(SurfaceX) + unit);
+        txtWall2.setText(floatFormat.format(SurfaceY) + unit);
+        txtWall3.setText(floatFormat.format(SurfaceX) + unit);
+        txtWall4.setText(floatFormat.format(SurfaceY) + unit);
+        txtFloor.setText(floatFormat.format(SurfaceZ) + unit);
+        txtCeiling.setText(floatFormat.format(SurfaceZ) + unit);
 
         //region buttons init
         btnWall1 = (Button) findViewById(R.id.btn_Wall1);
@@ -201,10 +212,10 @@ public class EditSurfaceActivity extends AppCompatActivity {
                 generateBOM();
             }
         });
-//        if(!AllMaterialsAreSelected()){
-//            btnGenerateBOM.setEnabled(false);
-//            btnGenerateBOM.setVisibility(View.GONE);
-//        }
+        if(!AllMaterialsAreSelected()){
+            btnGenerateBOM.setEnabled(false);
+            btnGenerateBOM.setVisibility(View.GONE);
+        }
         //endregion
     }
 
@@ -220,19 +231,17 @@ public class EditSurfaceActivity extends AppCompatActivity {
 
         BOM bom = new BOM();
 
-        bom.addItem(new Material("tapestry", new MaterialType(7, "Pure Element"),new MaterialSupplier(17, "Aerospace Metal Composites, Ltd."), 12.5), 1);
-        bom.addItem(new Material("tapestry", new MaterialType(7, "Pure Element"),new MaterialSupplier(17, "Aerospace Metal Composites, Ltd."), 12.5), 7);
-        bom.addItem(new Material("tapestry", new MaterialType(7, "Pure Element"),new MaterialSupplier(17, "Aerospace Metal Composites, Ltd."), 12.5), 1);
-        bom.addItem(new Material("tapestry", new MaterialType(7, "Pure Element"),new MaterialSupplier(17, "Aerospace Metal Composites, Ltd."), 12.5), 7);
-//            bom.addList(materialsWall1, Math.round(SurfaceX));
-//            bom.addList(materialsWall2, Math.round(SurfaceY));
-//            bom.addList(materialsWall3, Math.round(SurfaceX));
-//            bom.addList(materialsWall4, Math.round(SurfaceY));
-//            bom.addList(materialsFloor, Math.round(SurfaceZ));
-//            bom.addList(materialsCeiling, Math.round(SurfaceZ));
+        bom.addList(materialsWall1, (int)Math.ceil(SurfaceX));
+        bom.addList(materialsWall2, (int)Math.ceil(SurfaceY));
+        bom.addList(materialsWall3, (int)Math.ceil(SurfaceX));
+        bom.addList(materialsWall4, (int)Math.ceil(SurfaceY));
+        bom.addList(materialsFloor, (int)Math.ceil(SurfaceZ));
+        bom.addList(materialsCeiling, (int)Math.ceil(SurfaceZ));
 
         activity = new Intent(EditSurfaceActivity.this, GenerateBOMActivity.class);
-//            activity.putExtra("bom", bom);
+
+        activity.putExtra("grandTotal", bom.calculateGrandTotal());
+
         db = new MaterialSQLiteHelper(getApplicationContext());
         db.resetDB();
         db.initDB();

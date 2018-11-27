@@ -44,8 +44,8 @@
 
     <!-- ChooseMaterialActivity -->
     <string name="errorNoMaterialSelected">Vous devez sélectionner au moins un matériau pour votre surface.</string>
-    <string name="title_activity_generate_bom">GenerateBOMActivity</string>
 
     <!-- BOM layout -->
-    <string name="tvBOM">B.O.M.</string>
+    <string name="title_activity_generate_bom">B.O.M.</string>
+
 </resources>

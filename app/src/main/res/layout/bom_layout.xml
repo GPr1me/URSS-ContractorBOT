@@ -3,28 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
     <ListView
         android:id="@+id/listViewBOM"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:divider="#FF0000"
         android:dividerHeight="1dp"
-        app:layout_constraintTop_toTopOf="parent"></ListView>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvGrandTotal"></ListView>
 
     <TextView
-        android:id="@+id/tvShowBOM"
-        android:layout_width="177dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textSize="24sp"
+        android:id="@+id/tvGrandTotal"
+        android:layout_width="fill_parent"
+        android:layout_height="38dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="25sp"
         android:textStyle="bold"
-        android:text="@string/tvBOM"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

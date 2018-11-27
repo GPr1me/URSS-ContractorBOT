@@ -17,6 +17,7 @@
 package urss.contractorbot.BLE;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -102,7 +103,11 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setTitle(R.string.title_devices);
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(R.string.title_devices);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+
         mHandler = new Handler();
 
         //new location permission request
@@ -121,15 +126,6 @@ public class DeviceScanActivity extends ListActivity {
             // the ACCESS_COARSE_LOCATION permission did not exist before M so....
             permissions_granted = true;
         }
-
-        //old location permission request
-//        int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
-//        ActivityCompat.requestPermissions(this,
-//                new String[]
-//                        {
-//                                Manifest.permission.ACCESS_COARSE_LOCATION
-//                        },
-//                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
         // Use this check to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.
