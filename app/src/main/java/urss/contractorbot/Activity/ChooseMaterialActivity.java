@@ -1,5 +1,6 @@
 package urss.contractorbot.Activity;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import urss.contractorbot.BLE.DeviceControlActivity;
 import urss.contractorbot.Model.MaterialListPosition;
 import urss.contractorbot.R;
 import urss.contractorbot.ViewModel.MaterialCursorAdapter;
@@ -65,6 +67,12 @@ public class ChooseMaterialActivity extends EditSurfaceActivity {
     private void initLayout()
     {
         setContentView(R.layout.materiallayout);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
 
         tvChooseMaterialTitle = findViewById(R.id.tvChooseMaterial);
 

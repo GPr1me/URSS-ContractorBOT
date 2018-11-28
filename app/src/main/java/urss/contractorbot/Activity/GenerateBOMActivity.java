@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
+import urss.contractorbot.BLE.DeviceControlActivity;
 import urss.contractorbot.Model.BOM;
 import urss.contractorbot.Model.BOMItem;
 import urss.contractorbot.R;

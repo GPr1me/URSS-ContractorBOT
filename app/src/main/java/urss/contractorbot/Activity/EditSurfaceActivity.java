@@ -2,9 +2,13 @@ package urss.contractorbot.Activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.drm.DrmStore;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +18,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import urss.contractorbot.BLE.DeviceControlActivity;
+import urss.contractorbot.BLE.DeviceScanActivity;
 import urss.contractorbot.Model.BOM;
 import urss.contractorbot.Model.BOMItem;
 import urss.contractorbot.Model.Material;
@@ -39,6 +45,8 @@ public class EditSurfaceActivity extends AppCompatActivity {
     private Button btnFloor;
     private Button btnCeiling;
     private Button btnGenerateBOM;
+
+    private AppBarLayout titleBar;
 
     private float SurfaceX;
     private float SurfaceY;
@@ -71,7 +79,6 @@ public class EditSurfaceActivity extends AppCompatActivity {
         } else {
             extras = savedInstanceState;
         }
-
 
         SurfaceX = extras.getFloat("SurfaceX");
         SurfaceY = extras.getFloat("SurfaceY");
@@ -122,6 +129,13 @@ public class EditSurfaceActivity extends AppCompatActivity {
     private void initLayout(){
 
         setContentView(R.layout.activity_edit_surface);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
 
         txtWall1 = (TextView) findViewById(R.id.txt_Wall1Area);
         txtWall2 = (TextView) findViewById(R.id.txt_Wall2Area);
@@ -248,6 +262,24 @@ public class EditSurfaceActivity extends AppCompatActivity {
         db.fillBOM(bom);
         EditSurfaceActivity.this.startActivity(activity);
     }
+
+    // On back button click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            keepMemoryAlive();
+            super.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+//    private void returnToControls(){
+//        activity = new Intent(EditSurfaceActivity.this, DeviceControlActivity.class);
+//        EditSurfaceActivity.this.startActivity(activity);
+//    }
 
     private boolean AllMaterialsAreSelected(){
         return !materialsWall1.isEmpty()

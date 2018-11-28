@@ -16,6 +16,7 @@
 
 package urss.contractorbot.BLE;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -46,7 +47,9 @@ import java.util.regex.Pattern;
 import urss.contractorbot.Activity.EditSurfaceActivity;
 import urss.contractorbot.Activity.MainActivity;
 import urss.contractorbot.Helper.Utilities;
+import urss.contractorbot.Model.BLE_Device;
 import urss.contractorbot.R;
+import urss.contractorbot.SQLite.MaterialSQLiteHelper;
 
 import static urss.contractorbot.Helper.Utilities.cm2Topi2;
 
@@ -210,9 +213,37 @@ public class DeviceControlActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gatt_services_characteristics);
 
+		ActionBar actionBar = getActionBar();
+		if(actionBar != null){
+			actionBar.setDisplayShowHomeEnabled(false);
+			actionBar.setDisplayHomeAsUpEnabled(false);
+		}
+
 		final Intent intent = getIntent();
 		mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
 		mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+
+		if(mDeviceName != null && mDeviceAddress != null){
+			try{
+				MaterialSQLiteHelper db = new MaterialSQLiteHelper(getApplicationContext());
+				db.resetDB();
+				db.initDB();
+				db.setConnectedDevice(new BLE_Device(mDeviceName, mDeviceAddress));
+			} catch (Exception e){
+				// fuck this
+			}
+		} else {
+			try{
+				MaterialSQLiteHelper db = new MaterialSQLiteHelper(getApplicationContext());
+				BLE_Device mDevice = db.getConnectedDevice();
+
+				mDeviceName = mDevice.getName();
+				mDeviceAddress = mDevice.getAddress();
+			} catch (Exception e){
+				String test = e.getMessage();
+				// Also fuck that
+			}
+		}
 
 		// Sets up UI references.
 		((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
@@ -501,7 +532,7 @@ public class DeviceControlActivity extends Activity {
 
 	private void ReturnHome(){
 		mBluetoothLeService.disconnect();
-		activite = new Intent(DeviceControlActivity.this, MainActivity.class);
+		activite = new Intent(DeviceControlActivity.this, DeviceScanActivity.class);
 		DeviceControlActivity.this.startActivity(activite);
 	}
 
@@ -513,6 +544,9 @@ public class DeviceControlActivity extends Activity {
 		SurfaceX = 0;	// Make sure it is reset if we go back
 		SurfaceY = 0;
 		SurfaceZ = 0;
+		mBluetoothLeService.disconnect();
 		DeviceControlActivity.this.startActivity(activite);
 	}
+
+
 }

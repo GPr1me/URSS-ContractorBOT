@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import urss.contractorbot.Model.BLE_Device;
 import urss.contractorbot.Model.BOM;
 import urss.contractorbot.Model.BOMItem;
 import urss.contractorbot.Model.Material;
@@ -20,6 +21,7 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
     public static final String TABLE_TYPE = "materials_type";
     public static final String TABLE_SUPPLIER = "materials_Supplier";
     public static final String TABLE_BOM = "bom";
+    public static final String TABLE_BLE = "ble_device";
 
     public static final String KEY_MATERIAL_ID = "_id";
     public static final String KEY_MATERIAL_NAME = "material_name";
@@ -33,6 +35,9 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
     public static final String KEY_BOM_ID = "_id";
     public static final String KEY_MATERIAL_BOM_ID = "material_id";
     public static final String KEY_BOM_QUANTITY = "bom_quantity";
+    public static final String KEY_BLE_ID = "_id";
+    public static final String KEY_BLE_NAME = "ble_name";
+    public static final String KEY_BLE_ADDRESS = "ble_address";
 
     private static final String[] COLUMNS_MATERIAL =
     {
@@ -59,6 +64,13 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
     {
         KEY_MATERIAL_BOM_ID,
         KEY_BOM_QUANTITY
+    };
+
+    private static final String[] COLUMNS_BLE =
+    {
+        KEY_BLE_ID,
+        KEY_BLE_NAME,
+        KEY_BLE_ADDRESS
     };
 
     private static final MaterialSupplier[] SUPPLIERS =
@@ -936,11 +948,16 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
                             KEY_BOM_QUANTITY + " INTEGER, " +
                             "FOREIGN KEY (" + KEY_MATERIAL_ID + ") REFERENCES " +
                                           TABLE_MATERIAL + " (" + KEY_MATERIAL_ID + "))";
+        String CREATE_BLE = "CREATE TABLE " + TABLE_BLE + " ( " +
+                            KEY_BLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            KEY_BLE_NAME + " TEXT," +
+                            KEY_BLE_ADDRESS + " TEXT )";
 
-        db.execSQL((CREATE_TYPE_TABLE));
-        db.execSQL((CREATE_SUPPLIER_TABLE));
-        db.execSQL((CREATE_MATERIAL_TABLE));
-        db.execSQL((CREATE_BOM));
+        db.execSQL(CREATE_TYPE_TABLE);
+        db.execSQL(CREATE_SUPPLIER_TABLE);
+        db.execSQL(CREATE_MATERIAL_TABLE);
+        db.execSQL(CREATE_BOM);
+        db.execSQL(CREATE_BLE);
     }
 
     @Override
@@ -950,6 +967,7 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATERIAL);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUPPLIER);
         db.execSQL(("DROP TABLE IF EXISTS " + TABLE_TYPE));
+        db.execSQL(("DROP TABLE IF EXISTS " + TABLE_BLE));
 
         this.onCreate(db);
     }
@@ -1014,10 +1032,11 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
         return cursor;
     }
 
-    /*public Cursor getAllTypes()
-    {
-        String query = "SELECT * " +
-                " FROM " + TABLE_TYPE;
+    public BLE_Device getConnectedDevice(){
+        String query = "SELECT " + TABLE_BLE + "." + KEY_BLE_NAME +
+                       ", " + TABLE_BLE + "." + KEY_BLE_ADDRESS +
+                       " FROM " + TABLE_BLE +
+                       " LIMIT 1 ";
 
         Cursor cursor = null;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1027,9 +1046,29 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
             cursor.moveToFirst();
 
         db.close();
+        return new BLE_Device(cursor.getString(0), cursor.getString(1));
+    }
 
-        return cursor;
-    }*/
+    public void setConnectedDevice(BLE_Device device){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.beginTransaction();
+        try
+        {
+            ContentValues values = new ContentValues();
+            values.put(KEY_BLE_NAME, device.getName());
+            values.put(KEY_BLE_ADDRESS, device.getAddress());
+
+            db.insert(TABLE_BLE, null, values);
+
+            db.setTransactionSuccessful();
+        } finally
+        {
+            db.endTransaction();
+        }
+
+        db.close();
+    }
 
     public boolean deleteAllEntries()
     {
@@ -1038,7 +1077,8 @@ public class MaterialSQLiteHelper extends SQLiteOpenHelper{
         doneDelete = db.delete(TABLE_BOM, null, null)
                     + db.delete(TABLE_MATERIAL, null, null)
                     + db.delete(TABLE_TYPE, null, null)
-                    + db.delete(TABLE_SUPPLIER, null, null);
+                    + db.delete(TABLE_SUPPLIER, null, null)
+                    + db.delete(TABLE_BLE, null, null);
         db.close();
         return doneDelete > 0;
     }
